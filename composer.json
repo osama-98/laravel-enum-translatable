@@ -1,22 +1,25 @@
 {
-    "name": ":vendor_slug/:package_slug",
+    "name": "osama-98/laravel-enum-translatable",
     "description": ":package_description",
     "keywords": [
-        ":vendor_name",
+        "osama-98",
         "laravel",
-        ":package_slug"
+        "laravel-enum-translatable",
+        "laravel-enums",
+        "laravel enum translatable",
+        "laravel enums"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/osama-98/laravel-enum-translatable",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "Osama Sadah",
+            "email": "osama.sada98@gmail.com",
             "role": "Developer"
         }
     ],
     "require": {
-        "php": "^8.4",
+        "php": "^8.2",
         "spatie/laravel-package-tools": "^1.16",
         "illuminate/contracts": "^10.0||^11.0||^12.0"
     },
@@ -35,14 +38,12 @@
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src/",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories/"
+            "Osama\\LaravelEnums\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests/",
-            "Workbench\\App\\": "workbench/app/"
+            "Osama\\LaravelEnums\\Tests\\": "tests/"
         }
     },
     "scripts": {
@@ -60,16 +61,13 @@
             "phpstan/extension-installer": true
         }
     },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
-            ],
-            "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\Facades\\Skeleton"
-            }
+                "Osama\\LaravelEnums\\LaravelEnumTranslatableServiceProvider"
+            ]
         }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    }
 }
