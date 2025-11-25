@@ -40,7 +40,7 @@ trait EnumTranslatable
     /**
      * Get the translation namespace (module or default)
      */
-    protected static function getTranslationNamespace(): string
+    protected static function getTranslationNamespace(): ?string
     {
         $resolver = resolve(config('laravel-enums.namespace_resolver'));
 
