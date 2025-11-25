@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'statues' => [
+    'statuses' => [
         'pending' => 'Pending',
         'accepted' => 'Accepted',
         'rejected' => 'Rejected',
