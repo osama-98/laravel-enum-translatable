@@ -1,68 +1,362 @@
-# :package_description
+# Laravel Enum Translatable
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/:vendor_slug/:package_slug/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/:vendor_slug/:package_slug/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
-<!--delete-->
----
-This repo can be used to scaffold a Laravel package. Follow these steps to get started:
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/osama-98/laravel-enum-translatable.svg?style=flat-square)](https://packagist.org/packages/osama-98/laravel-enum-translatable)
+[![Total Downloads](https://img.shields.io/packagist/dt/osama-98/laravel-enum-translatable.svg?style=flat-square)](https://packagist.org/packages/osama-98/laravel-enum-translatable)
 
-1. Press the "Use this template" button at the top of this repo to create a new repo with the contents of this skeleton.
-2. Run "php ./configure.php" to run a script that will replace all placeholders throughout all the files.
-3. Have fun creating your package.
-4. If you need help creating a package, consider picking up our <a href="https://laravelpackage.training">Laravel Package Training</a> video course.
----
-<!--/delete-->
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+A Laravel package that provides translatable enum functionality with easy-to-use methods for working with enum values and their translations in your Laravel applications.
 
-## Support us
+## Features
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/:package_name.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/:package_name)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+- 🌍 **Translation Support**: Automatically translate enum values using Laravel's translation system
+- 📦 **Array Conversion**: Convert enums to arrays with `id` and `name` for easy API responses
+- 🎯 **Object Method**: Get enum as an object with `value` and translated `name`
+- 🔄 **Multiple Locales**: Support for multiple locales with `allTrans()` method
+- 🎨 **Easy Integration**: Simple trait-based implementation
+- 🧩 **Modular Support**: Optional support for modular Laravel applications
 
 ## Installation
 
 You can install the package via composer:
 
 ```bash
-composer require :vendor_slug/:package_slug
+composer require osama-98/laravel-enum-translatable
 ```
 
-You can publish and run the migrations with:
+The package will automatically register its service provider.
+
+## Configuration
+
+Publish the config file with:
 
 ```bash
-php artisan vendor:publish --tag=":package_slug-migrations"
-php artisan migrate
+php artisan vendor:publish --tag="laravel-enums-config"
 ```
 
-You can publish the config file with:
-
-```bash
-php artisan vendor:publish --tag=":package_slug-config"
-```
-
-This is the contents of the published config file:
+This will create a `config/laravel-enums.php` file with the following structure:
 
 ```php
 return [
+    'supported_locales' => [
+        'en',
+        // 'ar',
+        // 'es',
+        // ...
+    ],
+
+    /*
+    | Enable modular support (e.g., nWidart/laravel-modules)
+    | When enabled, translations will be loaded from module namespaces
+    */
+    'modular_enabled' => false,
+
+    /*
+    | Translation namespace resolver class
+    | You can extend TranslationNamespaceResolver and override the
+    | resolveModuleNamespace() method to customize how module namespaces are detected
+    */
+    'namespace_resolver' => \Osama\LaravelEnums\TranslationNamespaceResolver::class,
 ];
-```
-
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag=":package_slug-views"
 ```
 
 ## Usage
 
+### Creating a Translatable Enum
+
+Create an enum that uses the `EnumTranslatable` trait:
+
 ```php
-$variable = new VendorName\Skeleton();
-echo $variable->echoPhrase('Hello, VendorName!');
+<?php
+
+namespace App\Enums\Course;
+
+use Osama\LaravelEnums\Concerns\EnumTranslatable;
+
+enum CourseStatusEnum: string
+{
+    use EnumTranslatable;
+
+    case DRAFT = 'draft';
+    case PENDING = 'pending';
+    case PUBLISHED = 'published';
+}
+```
+
+### Setting Up Translation Files
+
+Create translation files in your `lang` directory. The translation key is automatically generated based on the enum class name.
+
+For `CourseStatusEnum`, the translation key will be `enums.course_statuses` (the class name without `Enum` suffix, converted to snake_case and pluralized).
+
+**lang/en/enums.php:**
+```php
+return [
+    'course_statuses' => [
+        'draft' => 'Draft',
+        'pending' => 'Pending',
+        'published' => 'Published',
+    ],
+];
+```
+
+**lang/ar/enums.php:**
+```php
+return [
+    'course_statuses' => [
+        'draft' => 'مسودة',
+        'pending' => 'قيد المراجعة',
+        'published' => 'منشور',
+    ],
+];
+```
+
+### Using Enums in Models
+
+You can use translatable enums in your Eloquent models with automatic casting:
+
+```php
+<?php
+
+namespace App\Models;
+
+use App\Enums\Course\CourseStatusEnum;
+use Illuminate\Database\Eloquent\Model;
+
+class Course extends Model
+{
+    protected $fillable = [
+        'name',
+        'status',
+        // ...
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'status' => CourseStatusEnum::class,
+        ];
+    }
+}
+```
+
+### Getting Enum Options as Array (with id and name)
+
+Use the `toArrayTrans()` static method to get all enum options as an array with `id` and `name`:
+
+```php
+// Returns:
+// [
+//     ['id' => 'draft', 'name' => 'Draft'],
+//     ['id' => 'pending', 'name' => 'Pending'],
+//     ['id' => 'published', 'name' => 'Published'],
+// ]
+$options = CourseStatusEnum::toArrayTrans();
+```
+
+This is perfect for dropdown options in your API:
+
+```php
+// In a controller
+public function getStatusOptions()
+{
+    return response()->json([
+        'data' => CourseStatusEnum::toArrayTrans()
+    ]);
+}
+```
+
+### Getting Enum as Object (with value and name)
+
+Use the `object()` method on an enum instance to get it as an object with `value` and translated `name`:
+
+```php
+$status = CourseStatusEnum::DRAFT;
+
+// Returns: ['value' => 'draft', 'name' => 'Draft']
+$statusObject = $status->object();
+```
+
+### Using in API Resources
+
+You can use the `object()` method in your API resources to return enum values with their translations:
+
+```php
+<?php
+
+namespace App\Http\Resources\V1\Course;
+
+use App\Enums\Course\CourseStatusEnum;
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class CourseResource extends JsonResource
+{
+    public function toArray($request): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'status' => $this->whenHas('status', fn (CourseStatusEnum $status) => $status->object()),
+            // Returns: ['value' => 'draft', 'name' => 'Draft']
+        ];
+    }
+}
+```
+
+### Getting Translated Value
+
+Get the translated value for a specific locale:
+
+```php
+$status = CourseStatusEnum::DRAFT;
+
+// Get translation in current locale
+$translated = $status->trans(); // 'Draft' or 'مسودة' depending on locale
+
+// Get translation in specific locale
+$arabic = $status->trans('ar'); // 'مسودة'
+$english = $status->trans('en'); // 'Draft'
+```
+
+### Getting All Translations
+
+Get all translations for an enum case across all supported locales:
+
+```php
+$status = CourseStatusEnum::DRAFT;
+
+// Returns: ['en' => 'Draft', 'ar' => 'مسودة']
+$allTranslations = $status->allTrans();
+```
+
+### Additional Helper Methods
+
+The package also provides several helper methods from the `EnumArrayable` trait:
+
+```php
+// Get all enum case names
+$names = CourseStatusEnum::names(); // ['DRAFT', 'PENDING', 'PUBLISHED']
+
+// Get all enum values
+$values = CourseStatusEnum::values(); // ['draft', 'pending', 'published']
+
+// Get enum as key-value array
+$array = CourseStatusEnum::toArray(); // ['draft' => 'DRAFT', 'pending' => 'PENDING', ...]
+
+// Get random enum case
+$random = CourseStatusEnum::randomCase();
+
+// Get random enum value
+$randomValue = CourseStatusEnum::randomValue();
+```
+
+## Complete Example
+
+Here's a complete example showing how to use translatable enums in a Laravel application:
+
+**1. Create the Enum:**
+```php
+<?php
+
+namespace App\Enums\Course;
+
+use Osama\LaravelEnums\Concerns\EnumTranslatable;
+
+enum CourseStatusEnum: string
+{
+    use EnumTranslatable;
+
+    case DRAFT = 'draft';
+    case PENDING = 'pending';
+    case PUBLISHED = 'published';
+}
+```
+
+**2. Create Translation Files:**
+
+`lang/en/enums.php`:
+```php
+return [
+    'course_statuses' => [
+        'draft' => 'Draft',
+        'pending' => 'Pending',
+        'published' => 'Published',
+    ],
+];
+```
+
+`lang/ar/enums.php`:
+```php
+return [
+    'course_statuses' => [
+        'draft' => 'مسودة',
+        'pending' => 'قيد المراجعة',
+        'published' => 'منشور',
+    ],
+];
+```
+
+**3. Use in Model:**
+```php
+<?php
+
+namespace App\Models;
+
+use App\Enums\Course\CourseStatusEnum;
+use Illuminate\Database\Eloquent\Model;
+
+class Course extends Model
+{
+    protected $fillable = ['name', 'status'];
+
+    protected function casts(): array
+    {
+        return [
+            'status' => CourseStatusEnum::class,
+        ];
+    }
+}
+```
+
+**4. Use in API Resource:**
+```php
+<?php
+
+namespace App\Http\Resources\V1\Course;
+
+use App\Enums\Course\CourseStatusEnum;
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class CourseResource extends JsonResource
+{
+    public function toArray($request): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'status' => $this->whenHas('status', fn (CourseStatusEnum $status) => $status->object()),
+        ];
+    }
+}
+```
+
+**5. Return Options in Controller:**
+```php
+<?php
+
+namespace App\Http\Controllers\V1\Course;
+
+use App\Enums\Course\CourseStatusEnum;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
+
+class CourseController extends Controller
+{
+    public function getStatusOptions(): JsonResponse
+    {
+        return response()->json([
+            'data' => CourseStatusEnum::toArrayTrans()
+        ]);
+    }
+}
 ```
 
 ## Testing
@@ -85,7 +379,7 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
-- [:author_name](https://github.com/:author_username)
+- [Osama Sadah](https://github.com/osama-98)
 - [All Contributors](../../contributors)
 
 ## License

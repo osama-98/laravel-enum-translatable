@@ -1,13 +1,22 @@
 {
     "name": "osama-98/laravel-enum-translatable",
-    "description": ":package_description",
+    "description": "A Laravel package that provides translatable enum functionality with easy-to-use methods for working with enum values and their translations",
     "keywords": [
         "osama-98",
         "laravel",
         "laravel-enum-translatable",
         "laravel-enums",
         "laravel enum translatable",
-        "laravel enums"
+        "laravel enums",
+        "enum",
+        "enums",
+        "translatable",
+        "translation",
+        "i18n",
+        "localization",
+        "php8",
+        "php8.2",
+        "backed-enum"
     ],
     "homepage": "https://github.com/osama-98/laravel-enum-translatable",
     "license": "MIT",
