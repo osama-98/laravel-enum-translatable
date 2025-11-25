@@ -62,4 +62,3 @@ it('can get random case excluding string values', function () {
     expect($random)->not->toBe(SimpleEnum::FIRST);
     expect($random)->toBeInstanceOf(SimpleEnum::class);
 });
-

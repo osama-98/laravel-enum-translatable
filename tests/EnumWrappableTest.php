@@ -39,4 +39,3 @@ it('returns null when wrapping invalid value in non-strict mode', function () {
 
     expect($wrapped)->toBeNull();
 });
-

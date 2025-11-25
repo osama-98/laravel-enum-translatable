@@ -82,13 +82,13 @@ it('returns translated names based on current locale', function () {
 
 it('can get object with translated name in different locale', function () {
     $enum = TestStatusEnum::PENDING;
-    
+
     App::setLocale('en');
     expect($enum->object()['name'])->toBe('Pending');
-    
+
     App::setLocale('ar');
     expect($enum->object()['name'])->toBe('قيد المراجعة');
-    
+
     App::setLocale('es');
     expect($enum->object()['name'])->toBe('Pendiente');
 });
@@ -116,4 +116,3 @@ it('can get all translations for all enum cases', function () {
         'es' => 'Publicado',
     ]);
 });
-

@@ -12,4 +12,3 @@ enum TestStatusEnum: string
     case PENDING = 'pending';
     case PUBLISHED = 'published';
 }
-

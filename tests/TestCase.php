@@ -28,7 +28,7 @@ class TestCase extends Orchestra
     {
         config()->set('database.default', 'testing');
         config()->set('laravel-enums.supported_locales', ['en', 'ar', 'es']);
-        
+
         // Set up translation files path for testing
         $app->useLangPath(__DIR__.'/lang');
     }
