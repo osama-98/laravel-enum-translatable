@@ -1,6 +1,8 @@
 <?php
 
-namespace Osama\LaravelEnums;
+namespace Osama\LaravelEnums\Concerns;
+
+use Osama\LaravelEnums\Contracts\TranslationNamespaceResolverInterface;
 
 trait EnumTranslatable
 {
@@ -26,9 +28,25 @@ trait EnumTranslatable
     /**
      * Get enum trans key
      */
+    /**
+     * Get enum trans key with namespace
+     */
     public static function getTransKey(): string
     {
-        return 'enums.'.str(rtrim(class_basename(static::class), 'Enum'))->snake()->plural();
+        $namespace = static::getTranslationNamespace();
+        $key = str(rtrim(class_basename(static::class), 'Enum'))->snake()->plural();
+
+        return "$namespace::enums.$key";
+    }
+
+    /**
+     * Get the translation namespace (module or default)
+     */
+    protected static function getTranslationNamespace(): string
+    {
+        $resolver = app(TranslationNamespaceResolverInterface::class);
+
+        return $resolver->resolve(static::class);
     }
 
     /**

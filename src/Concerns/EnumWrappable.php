@@ -1,6 +1,6 @@
 <?php
 
-namespace Osama\LaravelEnums;
+namespace Osama\LaravelEnums\Concerns;
 
 use BackedEnum;
 
