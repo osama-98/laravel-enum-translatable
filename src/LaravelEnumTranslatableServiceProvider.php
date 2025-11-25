@@ -11,5 +11,9 @@ class LaravelEnumTranslatableServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../config/laravel-enums.php' => config_path('laravel-enums.php'),
         ]);
+
+        $this->publishes([
+            __DIR__.'/../resources/lang/en/enums.php' => lang_path('en/enums.php'),
+        ]);
     }
 }
