@@ -7,15 +7,13 @@ class TranslationNamespaceResolver
     /**
      * Resolve the translation namespace for an enum class
      */
-    public function resolve(string $enumClass): string
+    public function resolve(string $enumClass): ?string
     {
         if (! config('laravel-enums.modular_enabled', false)) {
-            return $this->getDefaultNamespace();
+            return null;
         }
 
-        $moduleNamespace = $this->resolveModuleNamespace($enumClass);
-
-        return $moduleNamespace ?? $this->getDefaultNamespace();
+        return $this->resolveModuleNamespace($enumClass);
     }
 
     /**
@@ -31,13 +29,5 @@ class TranslationNamespaceResolver
         }
 
         return null;
-    }
-
-    /**
-     * Get the default namespace when not in a module
-     */
-    protected function getDefaultNamespace(): string
-    {
-        return 'enums';
     }
 }
