@@ -2,8 +2,6 @@
 
 namespace Osama\LaravelEnums\Concerns;
 
-use Osama\LaravelEnums\Contracts\TranslationNamespaceResolverInterface;
-
 trait EnumTranslatable
 {
     use EnumArrayable;
@@ -44,7 +42,7 @@ trait EnumTranslatable
      */
     protected static function getTranslationNamespace(): string
     {
-        $resolver = app(TranslationNamespaceResolverInterface::class);
+        $resolver = resolve(config('laravel-enums.namespace_resolver'));
 
         return $resolver->resolve(static::class);
     }

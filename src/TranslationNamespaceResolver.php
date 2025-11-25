@@ -2,9 +2,7 @@
 
 namespace Osama\LaravelEnums;
 
-use Osama\LaravelEnums\Contracts\TranslationNamespaceResolverInterface;
-
-class TranslationNamespaceResolver implements TranslationNamespaceResolverInterface
+class TranslationNamespaceResolver
 {
     /**
      * Resolve the translation namespace for an enum class
