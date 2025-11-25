@@ -6,6 +6,11 @@ use Illuminate\Support\ServiceProvider;
 
 class LaravelEnumTranslatableServiceProvider extends ServiceProvider
 {
+    public function register(): void
+    {
+        $this->loadTranslationsFrom(__DIR__.'/../lang', 'enums');
+    }
+
     public function boot(): void
     {
         $this->publishes([
