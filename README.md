@@ -1,9 +1,14 @@
-# Laravel Enum Translatable
+<div align="center">
+
+![Laravel Enum Translatable](.github/logo.svg)
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/osama-98/laravel-enum-translatable.svg?style=flat-square)](https://packagist.org/packages/osama-98/laravel-enum-translatable)
 [![Total Downloads](https://img.shields.io/packagist/dt/osama-98/laravel-enum-translatable.svg?style=flat-square)](https://packagist.org/packages/osama-98/laravel-enum-translatable)
+[![License](https://img.shields.io/packagist/l/osama-98/laravel-enum-translatable.svg?style=flat-square)](https://packagist.org/packages/osama-98/laravel-enum-translatable)
 
-A Laravel package that provides translatable enum functionality with easy-to-use methods for working with enum values and their translations in your Laravel applications.
+A Laravel package for translatable enums.
+
+</div>
 
 ## Features
 
@@ -22,7 +27,6 @@ You can install the package via composer:
 composer require osama-98/laravel-enum-translatable
 ```
 
-The package will automatically register its service provider.
 
 ## Configuration
 
@@ -152,7 +156,6 @@ Use the `toArrayTrans()` static method to get all enum options as an array with 
 $options = CourseStatusEnum::toArrayTrans();
 ```
 
-This is perfect for dropdown options in your API:
 
 ```php
 // In a controller
