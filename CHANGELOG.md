@@ -2,6 +2,10 @@
 
 All notable changes to `:package_name` will be documented in this file.
 
+## 1.1.0 - 2025-11-26
+
+**Full Changelog**: https://github.com/osama-98/laravel-enum-translatable/compare/1.0.0...1.1.0
+
 ## 1.0.0 - 2025-11-25
 
 ### What's Changed
