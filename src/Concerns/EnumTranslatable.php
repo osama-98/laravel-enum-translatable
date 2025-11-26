@@ -15,7 +15,7 @@ trait EnumTranslatable
 
         foreach (self::values() as $value) {
             $cases[] = [
-                'id' => $value,
+                'value' => $value,
                 'name' => __(static::getTransKey().".$value"),
             ];
         }
