@@ -13,7 +13,7 @@ A Laravel package for translatable enums.
 ## Features
 
 - 🌍 **Translation Support**: Automatically translate enum values using Laravel's translation system
-- 📦 **Array Conversion**: Convert enums to arrays with `id` and `name` for easy API responses
+- 📦 **Array Conversion**: Convert enums to arrays with `value` and `name` for easy API responses
 - 🎯 **Object Method**: Get enum as an object with `value` and translated `name`
 - 🔄 **Multiple Locales**: Support for multiple locales with `allTrans()` method
 - 🎨 **Easy Integration**: Simple trait-based implementation
@@ -142,16 +142,16 @@ class Course extends Model
 }
 ```
 
-### Getting Enum Options as Array (with id and name)
+### Getting Enum Options as Array (with value and name)
 
-Use the `toArrayTrans()` static method to get all enum options as an array with `id` and `name`:
+Use the `toArrayTrans()` static method to get all enum options as an array with `value` and `name`:
 
 ```php
 // Returns:
 // [
-//     ['id' => 'draft', 'name' => 'Draft'],
-//     ['id' => 'pending', 'name' => 'Pending'],
-//     ['id' => 'published', 'name' => 'Published'],
+//     ['value' => 'draft', 'name' => 'Draft'],
+//     ['value' => 'pending', 'name' => 'Pending'],
+//     ['value' => 'published', 'name' => 'Published'],
 // ]
 $options = CourseStatusEnum::toArrayTrans();
 ```
