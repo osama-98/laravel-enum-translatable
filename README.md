@@ -3,7 +3,6 @@
 ![Laravel Enum Translatable](.github/logo.svg)
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/osama-98/laravel-enum-translatable.svg?style=flat-square)](https://packagist.org/packages/osama-98/laravel-enum-translatable)
-[![Total Downloads](https://img.shields.io/packagist/dt/osama-98/laravel-enum-translatable.svg?style=flat-square)](https://packagist.org/packages/osama-98/laravel-enum-translatable)
 [![License](https://img.shields.io/packagist/l/osama-98/laravel-enum-translatable.svg?style=flat-square)](https://packagist.org/packages/osama-98/laravel-enum-translatable)
 
 A Laravel package for translatable enums.
