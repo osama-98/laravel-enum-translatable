@@ -24,9 +24,6 @@ trait EnumTranslatable
     }
 
     /**
-     * Get enum trans key
-     */
-    /**
      * Get enum trans key with namespace
      */
     public static function getTransKey(): string
