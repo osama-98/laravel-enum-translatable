@@ -9,6 +9,10 @@ A Laravel package for translatable enums.
 
 </div>
 
+## Documents
+[Meduim](https://masteryoflaravel.medium.com/stop-hardcoding-translations-the-revolutionary-way-to-build-multilingual-laravel-apps-with-bf303533b8b0)
+[Laravel News](https://masteryoflaravel.medium.com/stop-hardcoding-translations-the-revolutionary-way-to-build-multilingual-laravel-apps-with-bf303533b8b0)
+
 ## Features
 
 - 🌍 **Translation Support**: Automatically translate enum values using Laravel's translation system
