@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.2.0 - 2025-01-XX
+## 1.2.0 - 2025-12-29
 
 ### Added
 - Added `isNot()` method to check if enum does NOT match a value
