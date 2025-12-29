@@ -1,7 +1,5 @@
 # Changelog
 
-All notable changes to `:package_name` will be documented in this file.
-
 ## 1.2.0 - 2025-01-XX
 
 ### Added
