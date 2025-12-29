@@ -63,9 +63,9 @@ it('can get all enum options as array with id and name', function () {
     $options = TestStatusEnum::toArrayTrans();
 
     expect($options)->toBe([
-        ['id' => 'draft', 'name' => 'Draft'],
-        ['id' => 'pending', 'name' => 'Pending'],
-        ['id' => 'published', 'name' => 'Published'],
+        ['value' => 'draft', 'name' => 'Draft'],
+        ['value' => 'pending', 'name' => 'Pending'],
+        ['value' => 'published', 'name' => 'Published'],
     ]);
 });
 
@@ -74,9 +74,9 @@ it('returns translated names based on current locale', function () {
     $options = TestStatusEnum::toArrayTrans();
 
     expect($options)->toBe([
-        ['id' => 'draft', 'name' => 'مسودة'],
-        ['id' => 'pending', 'name' => 'قيد المراجعة'],
-        ['id' => 'published', 'name' => 'منشور'],
+        ['value' => 'draft', 'name' => 'مسودة'],
+        ['value' => 'pending', 'name' => 'قيد المراجعة'],
+        ['value' => 'published', 'name' => 'منشور'],
     ]);
 });
 

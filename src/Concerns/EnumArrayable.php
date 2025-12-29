@@ -49,4 +49,24 @@ trait EnumArrayable
         // "You requested 1 or more items, but there are only 0 items available"
         return Arr::random($cases);
     }
+
+    /**
+     * Get enum cases filtered to only include the specified values.
+     */
+    public static function only(array $values): array
+    {
+        $normalized = Arr::map($values, fn ($value) => $value instanceof BackedEnum ? $value->value : $value);
+
+        return Arr::where(self::cases(), fn ($case) => in_array($case->value, $normalized));
+    }
+
+    /**
+     * Get enum cases excluding the specified values.
+     */
+    public static function except(array $values): array
+    {
+        $normalized = Arr::map($values, fn ($value) => $value instanceof BackedEnum ? $value->value : $value);
+
+        return Arr::where(self::cases(), fn ($case) => ! in_array($case->value, $normalized));
+    }
 }

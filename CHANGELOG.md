@@ -2,6 +2,17 @@
 
 All notable changes to `:package_name` will be documented in this file.
 
+## 1.2.0 - 2025-01-XX
+
+### Added
+- Added `isNot()` method to check if enum does NOT match a value
+- Added `isAny()` method to check if enum matches any of the given values
+- Added `isNotAny()` method to check if enum does NOT match any of the given values
+- Added `only()` static method to filter enum cases to only include specified values
+- Added `except()` static method to filter enum cases excluding specified values
+
+**Full Changelog**: https://github.com/osama-98/laravel-enum-translatable/compare/1.1.0...1.2.0
+
 ## 1.1.0 - 2025-11-26
 
 **Full Changelog**: https://github.com/osama-98/laravel-enum-translatable/compare/1.0.0...1.1.0

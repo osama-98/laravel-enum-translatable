@@ -254,6 +254,54 @@ $random = CourseStatusEnum::randomCase();
 $randomValue = CourseStatusEnum::randomValue();
 ```
 
+### Comparison Methods
+
+The package provides several comparison methods for enum instances:
+
+```php
+$status = CourseStatusEnum::DRAFT;
+
+// Check if enum matches a value
+$status->is(CourseStatusEnum::DRAFT); // true
+$status->is('draft'); // true
+$status->is(CourseStatusEnum::PUBLISHED); // false
+
+// Check if enum does NOT match a value
+$status->isNot(CourseStatusEnum::PUBLISHED); // true
+$status->isNot('published'); // true
+$status->isNot(CourseStatusEnum::DRAFT); // false
+
+// Check if enum matches any of the given values
+$status->isAny([CourseStatusEnum::DRAFT, CourseStatusEnum::PENDING]); // true
+$status->isAny(['draft', 'pending']); // true
+$status->isAny([CourseStatusEnum::PUBLISHED]); // false
+
+// Check if enum does NOT match any of the given values
+$status->isNotAny([CourseStatusEnum::PUBLISHED]); // true
+$status->isNotAny(['published']); // true
+$status->isNotAny([CourseStatusEnum::DRAFT, CourseStatusEnum::PENDING]); // false
+```
+
+### Filtering Methods
+
+Filter enum cases based on values:
+
+```php
+// Get only specific enum cases
+$cases = CourseStatusEnum::only([CourseStatusEnum::DRAFT, CourseStatusEnum::PENDING]);
+// Returns array containing only DRAFT and PENDING cases
+
+$cases = CourseStatusEnum::only(['draft', 'pending']);
+// Same as above, using string values
+
+// Get enum cases excluding specific values
+$cases = CourseStatusEnum::except([CourseStatusEnum::PUBLISHED]);
+// Returns array containing DRAFT and PENDING cases
+
+$cases = CourseStatusEnum::except(['published']);
+// Same as above, using string value
+```
+
 ## Testing
 
 ```bash
