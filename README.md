@@ -12,7 +12,7 @@ A Laravel package for translatable enums.
 
 ## Documents
 [Meduim](https://masteryoflaravel.medium.com/stop-hardcoding-translations-the-revolutionary-way-to-build-multilingual-laravel-apps-with-bf303533b8b0)  
-[Laravel News](https://masteryoflaravel.medium.com/stop-hardcoding-translations-the-revolutionary-way-to-build-multilingual-laravel-apps-with-bf303533b8b0)
+[Laravel News](https://laravel-news.com/translatable-enums)
 
 ## Features
 
