@@ -2,6 +2,8 @@
 
 namespace Osama\LaravelEnums\Concerns;
 
+use Illuminate\Support\Facades\Lang;
+
 trait EnumTranslatable
 {
     use EnumArrayable;
@@ -60,7 +62,13 @@ trait EnumTranslatable
      */
     public function trans(?string $locale = null): string
     {
-        return __($this->transKey(), [], $locale);
+        $key = $this->transKey();
+
+        if (Lang::has($key, $locale)) {
+            return Lang::get($key, [], $locale);
+        }
+
+        return $this->value;
     }
 
     /**
