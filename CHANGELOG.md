@@ -1,8 +1,13 @@
 # Changelog
 
+## 1.3.0 - 2026-01-17
+
+Return the enum name as a fallback instead of dotted notation translation path
+
 ## 1.2.0 - 2025-12-29
 
 ### Added
+
 - Added `isNot()` method to check if enum does NOT match a value
 - Added `isAny()` method to check if enum matches any of the given values
 - Added `isNotAny()` method to check if enum does NOT match any of the given values
