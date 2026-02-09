@@ -31,9 +31,9 @@ it('can translate enum value in current locale', function () {
 it('can translate enum value in specific locale', function () {
     $enum = TestStatusEnum::DRAFT;
 
-    expect($enum->trans('en'))->toBe('Draft');
-    expect($enum->trans('ar'))->toBe('مسودة');
-    expect($enum->trans('es'))->toBe('Borrador');
+    expect($enum->trans('en'))->toBe('Draft')
+        ->and($enum->trans('ar'))->toBe('مسودة')
+        ->and($enum->trans('es'))->toBe('Borrador');
 });
 
 it('can get all translations for enum case', function () {
@@ -98,21 +98,20 @@ it('can get all translations for all enum cases', function () {
     $pending = TestStatusEnum::PENDING;
     $published = TestStatusEnum::PUBLISHED;
 
-    expect($draft->allTrans())->toBe([
-        'en' => 'Draft',
-        'ar' => 'مسودة',
-        'es' => 'Borrador',
-    ]);
-
-    expect($pending->allTrans())->toBe([
-        'en' => 'Pending',
-        'ar' => 'قيد المراجعة',
-        'es' => 'Pendiente',
-    ]);
-
-    expect($published->allTrans())->toBe([
-        'en' => 'Published',
-        'ar' => 'منشور',
-        'es' => 'Publicado',
-    ]);
+    expect($draft->allTrans())
+        ->toBe([
+            'en' => 'Draft',
+            'ar' => 'مسودة',
+            'es' => 'Borrador',
+        ])
+        ->and($pending->allTrans())->toBe([
+            'en' => 'Pending',
+            'ar' => 'قيد المراجعة',
+            'es' => 'Pendiente',
+        ])
+        ->and($published->allTrans())->toBe([
+            'en' => 'Published',
+            'ar' => 'منشور',
+            'es' => 'Publicado',
+        ]);
 });

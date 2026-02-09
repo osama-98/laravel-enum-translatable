@@ -52,6 +52,8 @@ trait EnumArrayable
 
     /**
      * Get enum cases filtered to only include the specified values.
+     *
+     * @return array<self>
      */
     public static function only(array $values): array
     {
@@ -62,11 +64,57 @@ trait EnumArrayable
 
     /**
      * Get enum cases excluding the specified values.
+     *
+     * @return array<self>
      */
     public static function except(array $values): array
     {
         $normalized = Arr::map($values, fn ($value) => $value instanceof BackedEnum ? $value->value : $value);
 
         return Arr::where(self::cases(), fn ($case) => ! in_array($case->value, $normalized));
+    }
+
+    /**
+     * Get enum cases whose values match the given wildcard pattern.
+     *
+     * @return array<self>
+     */
+    public static function matching(string $pattern): array
+    {
+        $regex = '/^'.str_replace('\*', '.*', preg_quote($pattern, '/')).'$/i';
+
+        return Arr::where(self::cases(), fn ($case) => preg_match($regex, $case->value));
+    }
+
+    /**
+     * Get enum cases whose values do not match the given wildcard pattern.
+     *
+     * @return array<self>
+     */
+    public static function notMatching(string $pattern): array
+    {
+        $regex = '/^'.str_replace('\*', '.*', preg_quote($pattern, '/')).'$/i';
+
+        return Arr::where(self::cases(), fn ($case) => ! preg_match($regex, $case->value));
+    }
+
+    /**
+     * Get enum cases whose values start with the given prefix.
+     *
+     * @return array<self>
+     */
+    public static function startsWith(string $prefix): array
+    {
+        return self::matching($prefix.'*');
+    }
+
+    /**
+     * Get enum cases whose values end with the given suffix.
+     *
+     * @return array<self>
+     */
+    public static function endsWith(string $suffix): array
+    {
+        return self::matching('*'.$suffix);
     }
 }

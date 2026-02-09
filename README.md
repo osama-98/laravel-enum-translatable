@@ -303,6 +303,34 @@ $cases = CourseStatusEnum::except(['published']);
 // Same as above, using string value
 ```
 
+### Pattern Matching
+
+Filter enum cases using wildcard patterns (`*` matches any characters). Matching is case-insensitive.
+
+```php
+// Match cases whose values start with a prefix
+$cases = CourseStatusEnum::matching('draft*');
+
+// Match cases whose values end with a suffix
+$cases = CourseStatusEnum::matching('*ed');
+
+// Match cases whose values contain a substring
+$cases = CourseStatusEnum::matching('*end*');
+
+// Get cases that do NOT match a pattern
+$cases = CourseStatusEnum::notMatching('draft*');
+```
+
+Convenience methods for common patterns:
+
+```php
+// Cases whose value starts with the given prefix
+$cases = CourseStatusEnum::startsWith('draft');
+
+// Cases whose value ends with the given suffix
+$cases = CourseStatusEnum::endsWith('ed');
+```
+
 ## Testing
 
 ```bash
