@@ -329,6 +329,9 @@ $cases = CourseStatusEnum::startsWith('draft');
 
 // Cases whose value ends with the given suffix
 $cases = CourseStatusEnum::endsWith('ed');
+
+// Cases whose value contains the given substring
+$cases = CourseStatusEnum::contains('end');
 ```
 
 ## Testing

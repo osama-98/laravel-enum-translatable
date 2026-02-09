@@ -189,3 +189,12 @@ it('can get cases ending with a suffix', function () {
         ->and($cases)->toContain(PatternEnum::INACTIVE_USER)
         ->and($cases)->toContain(PatternEnum::PENDING_USER);
 });
+
+it('can get cases containing a substring', function () {
+    $cases = PatternEnum::contains('_user');
+
+    expect($cases)->toHaveCount(3)
+        ->and($cases)->toContain(PatternEnum::ACTIVE_USER)
+        ->and($cases)->toContain(PatternEnum::INACTIVE_USER)
+        ->and($cases)->toContain(PatternEnum::PENDING_USER);
+});

@@ -117,4 +117,14 @@ trait EnumArrayable
     {
         return self::matching('*'.$suffix);
     }
+
+    /**
+     * Get enum cases whose values contain the given substring.
+     *
+     * @return array<self>
+     */
+    public static function contains(string $substring): array
+    {
+        return self::matching('*'.$substring.'*');
+    }
 }
