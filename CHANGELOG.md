@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.4.0 - 2026-02-09
+
+### Added
+
+- Added `matching()` static method for wildcard pattern matching on enum values
+- Added `notMatching()` static method for inverse wildcard pattern matching
+- Added `startsWith()` static method to filter enum cases by prefix
+- Added `endsWith()` static method to filter enum cases by suffix
+- Added `contains()` static method to filter enum cases by substring
+
+**Full Changelog**: https://github.com/osama-98/laravel-enum-translatable/compare/1.3.0...1.4.0
+
 ## 1.3.0 - 2026-01-17
 
 Return the enum name as a fallback instead of dotted notation translation path
