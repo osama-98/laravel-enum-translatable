@@ -13,7 +13,7 @@ trait EnumTranslatable
     {
         return array_map(fn (self $case) => [
             'value' => $case->value,
-            'name'  => $case->trans($locale),
+            'name' => $case->trans($locale),
         ], self::cases());
     }
 
