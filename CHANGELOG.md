@@ -1,5 +1,25 @@
 # Changelog
 
+## 1.5.0 - 2026-02-24
+
+### Added
+
+- Added `make:enum` artisan command to scaffold enum classes with `EnumTranslatable` by default
+  - `--int` flag to generate an integer backed enum
+  - `--arrayable` flag to use `EnumArrayable` instead of `EnumTranslatable`
+  - `--wrappable` flag to use `EnumWrappable` instead of `EnumTranslatable`
+  - Supports nested namespaces via `/` separator (e.g. `Admin/UserStatus`)
+  - Auto-appends the `Enum` suffix if omitted
+  - Prompts interactively for the name if not provided
+- Added `toCollection()` static method to `EnumArrayable` — Collection equivalent of `toArray()`
+- Added `toTransCollection(?string $locale = null)` static method to `EnumTranslatable` — Collection equivalent of `toArrayTrans()`
+
+### Updated
+
+- `toArrayTrans()` now accepts an optional `?string $locale = null` parameter to translate into a specific locale without changing the app locale
+
+**Full Changelog**: https://github.com/osama-98/laravel-enum-translatable/compare/1.4.0...1.5.0
+
 ## 1.4.0 - 2026-02-09
 
 ### Added

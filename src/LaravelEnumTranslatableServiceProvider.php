@@ -3,6 +3,7 @@
 namespace Osama\LaravelEnums;
 
 use Illuminate\Support\ServiceProvider;
+use Osama\LaravelEnums\Commands\MakeEnumCommand;
 
 class LaravelEnumTranslatableServiceProvider extends ServiceProvider
 {
@@ -23,5 +24,11 @@ class LaravelEnumTranslatableServiceProvider extends ServiceProvider
             __DIR__.'/../config/laravel-enums.php',
             'laravel-enums'
         );
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                MakeEnumCommand::class,
+            ]);
+        }
     }
 }

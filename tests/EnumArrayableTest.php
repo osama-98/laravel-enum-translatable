@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Collection;
 use Osama\LaravelEnums\Tests\Enums\PatternEnum;
 use Osama\LaravelEnums\Tests\Enums\SimpleEnum;
 
@@ -23,6 +24,18 @@ it('can convert enum to array', function () {
         'second' => 'SECOND',
         'third' => 'THIRD',
     ]);
+});
+
+it('can convert enum to collection', function () {
+    $collection = SimpleEnum::toCollection();
+
+    expect($collection)
+        ->toBeInstanceOf(Collection::class)
+        ->and($collection->all())->toBe([
+            'first' => 'FIRST',
+            'second' => 'SECOND',
+            'third' => 'THIRD',
+        ]);
 });
 
 it('can get a random enum case', function () {
