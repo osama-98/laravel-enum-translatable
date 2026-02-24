@@ -90,15 +90,15 @@ it('can get toArrayTrans in a specific locale', function () {
         ['value' => 'published', 'name' => 'Published'],
     ])
         ->and(TestStatusEnum::toArrayTrans('ar'))->toBe([
-        ['value' => 'draft', 'name' => 'مسودة'],
-        ['value' => 'pending', 'name' => 'قيد المراجعة'],
-        ['value' => 'published', 'name' => 'منشور'],
-    ])
+            ['value' => 'draft', 'name' => 'مسودة'],
+            ['value' => 'pending', 'name' => 'قيد المراجعة'],
+            ['value' => 'published', 'name' => 'منشور'],
+        ])
         ->and(TestStatusEnum::toArrayTrans('es'))->toBe([
-        ['value' => 'draft', 'name' => 'Borrador'],
-        ['value' => 'pending', 'name' => 'Pendiente'],
-        ['value' => 'published', 'name' => 'Publicado'],
-    ]);
+            ['value' => 'draft', 'name' => 'Borrador'],
+            ['value' => 'pending', 'name' => 'Pendiente'],
+            ['value' => 'published', 'name' => 'Publicado'],
+        ]);
 });
 
 it('can get toTransCollection in a specific locale', function () {
