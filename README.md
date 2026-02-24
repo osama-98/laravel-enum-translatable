@@ -6,76 +6,174 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/osama-98/laravel-enum-translatable.svg)](https://packagist.org/packages/osama-98/laravel-enum-translatable)
 [![License](https://img.shields.io/packagist/l/osama-98/laravel-enum-translatable.svg?style=flat-square)](https://packagist.org/packages/osama-98/laravel-enum-translatable)
 
-A Laravel package for translatable enums.
+**Supercharge your Laravel enums with translations, array helpers, and comparison methods — all via simple traits.**
+
+[Medium Article](https://masteryoflaravel.medium.com/stop-hardcoding-translations-the-revolutionary-way-to-build-multilingual-laravel-apps-with-bf303533b8b0) · [Laravel News](https://laravel-news.com/translatable-enums)
 
 </div>
 
-## Documents
-[Meduim](https://masteryoflaravel.medium.com/stop-hardcoding-translations-the-revolutionary-way-to-build-multilingual-laravel-apps-with-bf303533b8b0)  
-[Laravel News](https://laravel-news.com/translatable-enums)
+---
 
-## Features
+## Requirements
 
-- 🌍 **Translation Support**: Automatically translate enum values using Laravel's translation system
-- 📦 **Array Conversion**: Convert enums to arrays with `value` and `name` for easy API responses
-- 🎯 **Object Method**: Get enum as an object with `value` and translated `name`
-- 🔄 **Multiple Locales**: Support for multiple locales with `allTrans()` method
-- 🎨 **Easy Integration**: Simple trait-based implementation
-- 🧩 **Modular Support**: Optional support for modular Laravel applications
+- PHP 8.2+
+- Laravel 10, 11, or 12
+
+---
 
 ## Installation
-
-You can install the package via composer:
 
 ```bash
 composer require osama-98/laravel-enum-translatable
 ```
 
+---
+
+## Quick Start
+
+**1. Generate an enum:**
+
+```bash
+php artisan make:enum OrderStatus
+```
+
+**2. Add your cases:**
+
+```php
+enum OrderStatusEnum: string
+{
+    use EnumTranslatable;
+
+    case PENDING   = 'pending';
+    case SHIPPED   = 'shipped';
+    case DELIVERED = 'delivered';
+}
+```
+
+**3. Add translations in `lang/en/enums.php`:**
+
+```php
+return [
+    'order_statuses' => [
+        'pending'   => 'Pending',
+        'shipped'   => 'Shipped',
+        'delivered' => 'Delivered',
+    ],
+];
+```
+
+**4. Use it:**
+
+```php
+OrderStatusEnum::PENDING->trans();       // 'Pending'
+OrderStatusEnum::PENDING->trans('ar');   // 'قيد الانتظار'
+OrderStatusEnum::toArrayTrans();         // [['value' => 'pending', 'name' => 'Pending'], ...]
+```
+
+---
 
 ## Configuration
 
-Publish the config file with:
+Publish the config file to customize supported locales and modular support:
 
 ```bash
 php artisan vendor:publish --tag="laravel-enums-config"
 ```
 
-This will create a `config/laravel-enums.php` file with the following structure:
+`config/laravel-enums.php`:
 
 ```php
 return [
-    'supported_locales' => [
-        'en',
-        // 'ar',
-        // 'es',
-        // ...
-    ],
 
     /*
-    | Enable modular support (e.g., nWidart/laravel-modules)
-    | When enabled, translations will be loaded from module namespaces
+    |--------------------------------------------------------------------------
+    | Supported Locales
+    |--------------------------------------------------------------------------
+    | The locales that allTrans() will return translations for.
+    */
+    'supported_locales' => ['en'],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Modular Support
+    |--------------------------------------------------------------------------
+    | Enable this if you use a module system such as nWidart/laravel-modules.
+    | Translations will be loaded from each module's namespace automatically.
     */
     'modular_enabled' => false,
 
     /*
-    | Translation namespace resolver class
-    | You can extend TranslationNamespaceResolver and override the
-    | resolveModuleNamespace() method to customize how module namespaces are detected
+    |--------------------------------------------------------------------------
+    | Namespace Resolver
+    |--------------------------------------------------------------------------
+    | The class responsible for resolving a module's translation namespace.
+    | Extend TranslationNamespaceResolver to customize the resolution logic.
     */
     'namespace_resolver' => \Osama\LaravelEnums\TranslationNamespaceResolver::class,
+
 ];
 ```
 
+---
+
+## Available Traits
+
+The package ships three traits that build on each other:
+
+```
+EnumTranslatable
+ └── EnumArrayable
+      └── EnumWrappable
+```
+
+| Trait | Best for |
+|---|---|
+| `EnumTranslatable` | Enums that need translated labels (includes everything below) |
+| `EnumArrayable` | Enums used for filtering/listing without translation |
+| `EnumWrappable` | Enums that only need comparison and safe-casting helpers |
+
+---
+
+## Generating Enums
+
+Use the `make:enum` artisan command to scaffold a new enum class:
+
+```bash
+# String backed with EnumTranslatable (default)
+php artisan make:enum OrderStatus
+
+# Integer backed
+php artisan make:enum OrderStatus --int
+
+# With EnumArrayable instead
+php artisan make:enum OrderStatus --arrayable
+
+# With EnumWrappable instead
+php artisan make:enum OrderStatus --wrappable
+```
+
+> **Note:** `--arrayable` already includes `EnumWrappable` internally, so there is no need to pass both.
+
+Generated files are placed in `app/Enums/`. Nested namespaces are supported using `/`:
+
+```bash
+php artisan make:enum Admin/UserStatus
+# → app/Enums/Admin/UserStatusEnum.php
+# → namespace App\Enums\Admin
+```
+
+> The `Enum` suffix is appended automatically if not included in the name.
+
+---
+
 ## Usage
 
-### Creating a Translatable Enum
-
-Create an enum that uses the `EnumTranslatable` trait:
+All examples use the following enum:
 
 ```php
 <?php
 
-namespace App\Enums\Course;
+namespace App\Enums;
 
 use Osama\LaravelEnums\Concerns\EnumTranslatable;
 
@@ -83,256 +181,276 @@ enum CourseStatusEnum: string
 {
     use EnumTranslatable;
 
-    case DRAFT = 'draft';
-    case PENDING = 'pending';
+    case DRAFT     = 'draft';
+    case PENDING   = 'pending';
     case PUBLISHED = 'published';
 }
 ```
 
-### Setting Up Translation Files
+### Translation Key Convention
 
-Create translation files in your `lang` directory. The translation key is automatically generated based on the enum class name.
+The translation key is derived automatically from the class name:
 
-For `CourseStatusEnum`, the translation key will be `enums.course_statuses` (the class name without `Enum` suffix, converted to snake_case and pluralized).
+- Strip the `Enum` suffix
+- Convert to `snake_case`
+- Pluralize
+- Nest under the `enums` key
 
-**lang/en/enums.php:**
+`CourseStatusEnum` → `enums.course_statuses`
+
+Create one `enums.php` file per locale inside your `lang/` directory:
+
+```
+lang/
+├── en/
+│   └── enums.php
+├── ar/
+│   └── enums.php
+```
+
 ```php
+// lang/en/enums.php
 return [
     'course_statuses' => [
-        'draft' => 'Draft',
-        'pending' => 'Pending',
+        'draft'     => 'Draft',
+        'pending'   => 'Pending',
         'published' => 'Published',
     ],
 ];
 ```
 
-**lang/ar/enums.php:**
 ```php
+// lang/ar/enums.php
 return [
     'course_statuses' => [
-        'draft' => 'مسودة',
-        'pending' => 'قيد المراجعة',
+        'draft'     => 'مسودة',
+        'pending'   => 'قيد المراجعة',
         'published' => 'منشور',
     ],
 ];
 ```
 
-### Using Enums in Models
+---
 
-You can use translatable enums in your Eloquent models with automatic casting:
+### `EnumTranslatable`
+
+#### `trans(?string $locale = null): string`
+
+Returns the translated label for the current case in the given locale (defaults to the app locale). Falls back to the raw value if no translation is found.
 
 ```php
-<?php
+$status = CourseStatusEnum::DRAFT;
 
-namespace App\Models;
+$status->trans();      // 'Draft'   (current locale)
+$status->trans('ar');  // 'مسودة'
+$status->trans('en');  // 'Draft'
+```
 
-use App\Enums\Course\CourseStatusEnum;
-use Illuminate\Database\Eloquent\Model;
+#### `allTrans(): array`
 
-class Course extends Model
+Returns translations for all locales defined in `supported_locales`.
+
+```php
+CourseStatusEnum::DRAFT->allTrans();
+// ['en' => 'Draft', 'ar' => 'مسودة']
+```
+
+#### `toArrayTrans(?string $locale = null): array`
+
+Returns all cases as an array of `['value', 'name']` pairs. Uses the current app locale when `$locale` is `null`.
+
+```php
+CourseStatusEnum::toArrayTrans();      // current locale
+CourseStatusEnum::toArrayTrans('ar');  // Arabic
+CourseStatusEnum::toArrayTrans('en');  // English
+// [
+//     ['value' => 'draft',     'name' => 'Draft'],
+//     ['value' => 'pending',   'name' => 'Pending'],
+//     ['value' => 'published', 'name' => 'Published'],
+// ]
+```
+
+#### `toTransCollection(?string $locale = null): Collection`
+
+Same as `toArrayTrans()` but returns a Laravel `Collection`.
+
+```php
+CourseStatusEnum::toTransCollection();      // current locale
+CourseStatusEnum::toTransCollection('ar');  // Arabic
+// Collection([
+//     ['value' => 'draft',     'name' => 'مسودة'],
+//     ['value' => 'pending',   'name' => 'قيد المراجعة'],
+//     ['value' => 'published', 'name' => 'منشور'],
+// ])
+```
+
+#### `object(): array`
+
+Returns the current case as a `['value', 'name']` pair using the current locale. Ideal for API responses.
+
+```php
+CourseStatusEnum::DRAFT->object();
+// ['value' => 'draft', 'name' => 'Draft']
+```
+
+#### `transKey(): string`
+
+Returns the full translation key for the current case.
+
+```php
+CourseStatusEnum::DRAFT->transKey(); // 'enums.course_statuses.draft'
+```
+
+#### `getTransKey(): string`
+
+Returns the translation key for the enum class (without a specific case).
+
+```php
+CourseStatusEnum::getTransKey(); // 'enums.course_statuses'
+```
+
+---
+
+### `EnumArrayable`
+
+#### `names(): array` · `values(): array` · `toArray(): array`
+
+```php
+CourseStatusEnum::names();   // ['DRAFT', 'PENDING', 'PUBLISHED']
+CourseStatusEnum::values();  // ['draft', 'pending', 'published']
+CourseStatusEnum::toArray(); // ['draft' => 'DRAFT', 'pending' => 'PENDING', 'published' => 'PUBLISHED']
+```
+
+#### `toCollection(): Collection`
+
+Same as `toArray()` but returns a Laravel `Collection`, giving you access to all collection methods.
+
+```php
+CourseStatusEnum::toCollection();
+// Collection(['draft' => 'DRAFT', 'pending' => 'PENDING', 'published' => 'PUBLISHED'])
+
+CourseStatusEnum::toCollection()->keys();   // ['draft', 'pending', 'published']
+CourseStatusEnum::toCollection()->values(); // ['DRAFT', 'PENDING', 'PUBLISHED']
+```
+
+#### `only(array $values): array` · `except(array $values): array`
+
+Filter cases by value. Accepts raw values or enum instances.
+
+```php
+CourseStatusEnum::only(['draft', 'pending']);
+// [CourseStatusEnum::DRAFT, CourseStatusEnum::PENDING]
+
+CourseStatusEnum::except([CourseStatusEnum::PUBLISHED]);
+// [CourseStatusEnum::DRAFT, CourseStatusEnum::PENDING]
+```
+
+#### `randomCase(): self` · `randomValue(): string`
+
+Pick a random case or value, with an optional exclusion list.
+
+```php
+CourseStatusEnum::randomCase();                        // e.g. CourseStatusEnum::PENDING
+CourseStatusEnum::randomValue();                       // e.g. 'pending'
+CourseStatusEnum::randomCase(except: CourseStatusEnum::DRAFT); // never returns DRAFT
+CourseStatusEnum::randomValue(except: ['draft', 'pending']);   // always returns 'published'
+```
+
+#### `matching(string $pattern): array` · `notMatching(string $pattern): array`
+
+Filter cases using a wildcard pattern. Case-insensitive. `*` matches any characters.
+
+```php
+CourseStatusEnum::matching('*ed');    // [PENDING, PUBLISHED]
+CourseStatusEnum::notMatching('*ed'); // [DRAFT]
+```
+
+Convenience shortcuts:
+
+```php
+CourseStatusEnum::startsWith('p'); // [PENDING, PUBLISHED]
+CourseStatusEnum::endsWith('ed');  // [PENDING, PUBLISHED]
+CourseStatusEnum::contains('ish'); // [PUBLISHED]
+```
+
+---
+
+### `EnumWrappable`
+
+#### `wrap(BackedEnum|string|null $value, bool $strict = true): ?static`
+
+Safely casts a string or an existing enum instance to the enum. Returns `null` for empty values. Use `strict: false` to use `tryFrom` instead of `from` (no exception on invalid values).
+
+```php
+CourseStatusEnum::wrap('draft');                   // CourseStatusEnum::DRAFT
+CourseStatusEnum::wrap(CourseStatusEnum::DRAFT);   // CourseStatusEnum::DRAFT
+CourseStatusEnum::wrap(null);                      // null
+CourseStatusEnum::wrap('invalid', strict: false);  // null
+```
+
+#### `is(BackedEnum|string $value): bool` · `isNot(BackedEnum|string $value): bool`
+
+```php
+$status = CourseStatusEnum::DRAFT;
+
+$status->is('draft');                        // true
+$status->is(CourseStatusEnum::DRAFT);        // true
+$status->isNot(CourseStatusEnum::PUBLISHED); // true
+```
+
+#### `isAny(array $values): bool` · `isNotAny(array $values): bool`
+
+```php
+$status->isAny(['draft', 'pending']);                                       // true
+$status->isAny([CourseStatusEnum::PUBLISHED]);                              // false
+$status->isNotAny([CourseStatusEnum::PENDING, CourseStatusEnum::PUBLISHED]); // true
+```
+
+---
+
+## Real-World Examples
+
+### Eloquent Model
+
+Cast a column to an enum automatically:
+
+```php
+protected function casts(): array
 {
-    protected $fillable = [
-        'name',
-        'status',
-        // ...
+    return [
+        'status' => CourseStatusEnum::class,
     ];
-
-    protected function casts(): array
-    {
-        return [
-            'status' => CourseStatusEnum::class,
-        ];
-    }
 }
 ```
 
-### Getting Enum Options as Array (with value and name)
+### API Resource
 
-Use the `toArrayTrans()` static method to get all enum options as an array with `value` and `name`:
+Use `object()` to return a structured value + label pair:
 
 ```php
-// Returns:
-// [
-//     ['value' => 'draft', 'name' => 'Draft'],
-//     ['value' => 'pending', 'name' => 'Pending'],
-//     ['value' => 'published', 'name' => 'Published'],
-// ]
-$options = CourseStatusEnum::toArrayTrans();
+public function toArray(Request $request): array
+{
+    return [
+        'id'     => $this->id,
+        'title'  => $this->title,
+        'status' => $this->status->object(),
+        // ['value' => 'draft', 'name' => 'Draft']
+    ];
+}
 ```
 
+### Select Dropdown (Controller)
 
 ```php
-// In a controller
-public function getStatusOptions()
+public function create(): JsonResponse
 {
     return response()->json([
-        'data' => CourseStatusEnum::toArrayTrans()
+        'statuses' => CourseStatusEnum::toArrayTrans(),
     ]);
 }
 ```
 
-### Getting Enum as Object (with value and name)
-
-Use the `object()` method on an enum instance to get it as an object with `value` and translated `name`:
-
-```php
-$status = CourseStatusEnum::DRAFT;
-
-// Returns: ['value' => 'draft', 'name' => 'Draft']
-$statusObject = $status->object();
-```
-
-### Using in API Resources
-
-You can use the `object()` method in your API resources to return enum values with their translations:
-
-```php
-<?php
-
-namespace App\Http\Resources\V1\Course;
-
-use App\Enums\Course\CourseStatusEnum;
-use Illuminate\Http\Resources\Json\JsonResource;
-
-class CourseResource extends JsonResource
-{
-    public function toArray($request): array
-    {
-        return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'status' => $this->whenHas('status', fn (CourseStatusEnum $status) => $status->object()),
-            // Returns: ['value' => 'draft', 'name' => 'Draft']
-        ];
-    }
-}
-```
-
-### Getting Translated Value
-
-Get the translated value for a specific locale:
-
-```php
-$status = CourseStatusEnum::DRAFT;
-
-// Get translation in current locale
-$translated = $status->trans(); // 'Draft' or 'مسودة' depending on locale
-
-// Get translation in specific locale
-$arabic = $status->trans('ar'); // 'مسودة'
-$english = $status->trans('en'); // 'Draft'
-```
-
-### Getting All Translations
-
-Get all translations for an enum case across all supported locales:
-
-```php
-$status = CourseStatusEnum::DRAFT;
-
-// Returns: ['en' => 'Draft', 'ar' => 'مسودة']
-$allTranslations = $status->allTrans();
-```
-
-### Additional Helper Methods
-
-The package also provides several helper methods from the `EnumArrayable` trait:
-
-```php
-// Get all enum case names
-$names = CourseStatusEnum::names(); // ['DRAFT', 'PENDING', 'PUBLISHED']
-
-// Get all enum values
-$values = CourseStatusEnum::values(); // ['draft', 'pending', 'published']
-
-// Get enum as key-value array
-$array = CourseStatusEnum::toArray(); // ['draft' => 'DRAFT', 'pending' => 'PENDING', ...]
-
-// Get random enum case
-$random = CourseStatusEnum::randomCase();
-
-// Get random enum value
-$randomValue = CourseStatusEnum::randomValue();
-```
-
-### Comparison Methods
-
-The package provides several comparison methods for enum instances:
-
-```php
-$status = CourseStatusEnum::DRAFT;
-
-// Check if enum matches a value
-$status->is(CourseStatusEnum::DRAFT); // true
-$status->is('draft'); // true
-$status->is(CourseStatusEnum::PUBLISHED); // false
-
-// Check if enum does NOT match a value
-$status->isNot(CourseStatusEnum::PUBLISHED); // true
-$status->isNot('published'); // true
-$status->isNot(CourseStatusEnum::DRAFT); // false
-
-// Check if enum matches any of the given values
-$status->isAny([CourseStatusEnum::DRAFT, CourseStatusEnum::PENDING]); // true
-$status->isAny(['draft', 'pending']); // true
-$status->isAny([CourseStatusEnum::PUBLISHED]); // false
-
-// Check if enum does NOT match any of the given values
-$status->isNotAny([CourseStatusEnum::PUBLISHED]); // true
-$status->isNotAny(['published']); // true
-$status->isNotAny([CourseStatusEnum::DRAFT, CourseStatusEnum::PENDING]); // false
-```
-
-### Filtering Methods
-
-Filter enum cases based on values:
-
-```php
-// Get only specific enum cases
-$cases = CourseStatusEnum::only([CourseStatusEnum::DRAFT, CourseStatusEnum::PENDING]);
-// Returns array containing only DRAFT and PENDING cases
-
-$cases = CourseStatusEnum::only(['draft', 'pending']);
-// Same as above, using string values
-
-// Get enum cases excluding specific values
-$cases = CourseStatusEnum::except([CourseStatusEnum::PUBLISHED]);
-// Returns array containing DRAFT and PENDING cases
-
-$cases = CourseStatusEnum::except(['published']);
-// Same as above, using string value
-```
-
-### Pattern Matching
-
-Filter enum cases using wildcard patterns (`*` matches any characters). Matching is case-insensitive.
-
-```php
-// Match cases whose values start with a prefix
-$cases = CourseStatusEnum::matching('draft*');
-
-// Match cases whose values end with a suffix
-$cases = CourseStatusEnum::matching('*ed');
-
-// Match cases whose values contain a substring
-$cases = CourseStatusEnum::matching('*end*');
-
-// Get cases that do NOT match a pattern
-$cases = CourseStatusEnum::notMatching('draft*');
-```
-
-Convenience methods for common patterns:
-
-```php
-// Cases whose value starts with the given prefix
-$cases = CourseStatusEnum::startsWith('draft');
-
-// Cases whose value ends with the given suffix
-$cases = CourseStatusEnum::endsWith('ed');
-
-// Cases whose value contains the given substring
-$cases = CourseStatusEnum::contains('end');
-```
+---
 
 ## Testing
 
@@ -340,9 +458,11 @@ $cases = CourseStatusEnum::contains('end');
 composer test
 ```
 
+---
+
 ## Changelog
 
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+Please see [CHANGELOG](CHANGELOG.md) for recent changes.
 
 ## Credits
 

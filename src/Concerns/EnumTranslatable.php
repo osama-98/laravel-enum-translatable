@@ -2,27 +2,24 @@
 
 namespace Osama\LaravelEnums\Concerns;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Lang;
 
 trait EnumTranslatable
 {
     use EnumArrayable;
 
-    /**
-     * Get enum Arrayable as translation
-     */
-    public static function toArrayTrans(): array
+    public static function toArrayTrans(?string $locale = null): array
     {
-        $cases = [];
+        return array_map(fn (self $case) => [
+            'value' => $case->value,
+            'name'  => $case->trans($locale),
+        ], self::cases());
+    }
 
-        foreach (self::values() as $value) {
-            $cases[] = [
-                'value' => $value,
-                'name' => __(static::getTransKey().".$value"),
-            ];
-        }
-
-        return $cases;
+    public static function toTransCollection(?string $locale = null): Collection
+    {
+        return collect(self::toArrayTrans($locale));
     }
 
     /**

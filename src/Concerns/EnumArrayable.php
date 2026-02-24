@@ -4,6 +4,7 @@ namespace Osama\LaravelEnums\Concerns;
 
 use BackedEnum;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 
 trait EnumArrayable
 {
@@ -22,6 +23,11 @@ trait EnumArrayable
     public static function toArray(): array
     {
         return array_combine(self::values(), self::names());
+    }
+
+    public static function toCollection(): Collection
+    {
+        return collect(self::toArray());
     }
 
     /**
