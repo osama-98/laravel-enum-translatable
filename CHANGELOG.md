@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.2 - 2026-03-14
+
+- enhance composer.json keywords
+
 ## 1.5.1 - 2026-03-14
 
 - enhance composer keywords
@@ -9,6 +13,7 @@
 ### Added
 
 - Added `make:enum` artisan command to scaffold enum classes with `EnumTranslatable` by default
+  
   - `--int` flag to generate an integer backed enum
   - `--arrayable` flag to use `EnumArrayable` instead of `EnumTranslatable`
   - `--wrappable` flag to use `EnumWrappable` instead of `EnumTranslatable`
@@ -17,7 +22,9 @@
   - Prompts interactively for the name if not provided
   
 - Added `toCollection()` static method to `EnumArrayable` — Collection equivalent of `toArray()`
+  
 - Added `toTransCollection(?string $locale = null)` static method to `EnumTranslatable` — Collection equivalent of `toArrayTrans()`
+  
 
 ### Updated
 
