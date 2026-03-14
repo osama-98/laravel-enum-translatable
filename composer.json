@@ -16,7 +16,11 @@
         "localization",
         "php8",
         "php8.2",
-        "backed-enum"
+        "backed-enum",
+        "make:enum",
+        "make enum",
+        "translate enums",
+        "translations"
     ],
     "homepage": "https://github.com/osama-98/laravel-enum-translatable",
     "license": "MIT",
