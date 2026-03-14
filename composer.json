@@ -17,7 +17,6 @@
         "php8",
         "php8.2",
         "backed-enum",
-        "make:enum",
         "make enum",
         "translate enums",
         "translations"
