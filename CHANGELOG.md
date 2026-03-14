@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.1 - 2026-03-14
+
+- enhance composer keywords
+
 ## 1.5.0 - 2026-02-24
 
 ### Added
@@ -11,6 +15,7 @@
   - Supports nested namespaces via `/` separator (e.g. `Admin/UserStatus`)
   - Auto-appends the `Enum` suffix if omitted
   - Prompts interactively for the name if not provided
+  
 - Added `toCollection()` static method to `EnumArrayable` — Collection equivalent of `toArray()`
 - Added `toTransCollection(?string $locale = null)` static method to `EnumTranslatable` — Collection equivalent of `toArrayTrans()`
 
