@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.0 - 2026-03-16
+
+### Breaking Changes
+
+- Dropped Laravel 10 support. Minimum required version is now Laravel 11.
+
 ## 1.5.2 - 2026-03-14
 
 - enhance composer.json keywords
