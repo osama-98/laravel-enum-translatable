@@ -1,5 +1,7 @@
 <?php
 
+use Osama\LaravelEnums\TranslationNamespaceResolver;
+
 return [
     'supported_locales' => [
         'en',
@@ -19,5 +21,5 @@ return [
     | You can extend TranslationNamespaceResolver and override the
     | resolveModuleNamespace() method to customize how module namespaces are detected
     */
-    'namespace_resolver' => \Osama\LaravelEnums\TranslationNamespaceResolver::class,
+    'namespace_resolver' => TranslationNamespaceResolver::class,
 ];
