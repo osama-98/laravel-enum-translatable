@@ -97,9 +97,9 @@ class MakeEnumCommand extends GeneratorCommand
     protected function getOptions(): array
     {
         return [
-            ['int', null, InputOption::VALUE_NONE, 'Create an integer backed enum.'],
-            ['arrayable', null, InputOption::VALUE_NONE, 'Use EnumArrayable instead of EnumTranslatable (includes EnumWrappable).'],
-            ['wrappable', null, InputOption::VALUE_NONE, 'Use EnumWrappable instead of EnumTranslatable.'],
+            new InputOption('int', null, InputOption::VALUE_NONE, 'Create an integer backed enum.'),
+            new InputOption('arrayable', null, InputOption::VALUE_NONE, 'Use EnumArrayable instead of EnumTranslatable (includes EnumWrappable).'),
+            new InputOption('wrappable', null, InputOption::VALUE_NONE, 'Use EnumWrappable instead of EnumTranslatable.'),
         ];
     }
 
