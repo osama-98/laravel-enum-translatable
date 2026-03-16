@@ -6,7 +6,10 @@ parameters:
     paths:
         - src
         - config
-        - database
+        - tests
+    excludePaths:
+        - tests/ArchTest.php
+        - tests/MakeEnumCommandTest.php
     tmpDir: build/phpstan
     checkOctaneCompatibility: true
     checkModelProperties: true
