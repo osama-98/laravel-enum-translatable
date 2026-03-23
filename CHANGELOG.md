@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.0 - 2026-03-23
+
+- Add Laravel13 support
+
 ## 2.0.0 - 2026-03-16
 
 ### Breaking Changes
