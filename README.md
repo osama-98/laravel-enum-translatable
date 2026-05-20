@@ -213,8 +213,11 @@ lang/
 return [
     'course_statuses' => [
         'draft'     => 'Draft',
+        'draft_description' => ':name is currently in draft mode.',
         'pending'   => 'Pending',
+        'pending_description' => ':name is currently pending review.',
         'published' => 'Published',
+        'published_description' => 'Your post has been published.',
     ],
 ];
 ```
@@ -224,8 +227,11 @@ return [
 return [
     'course_statuses' => [
         'draft'     => 'مسودة',
+        'draft_description' => ':name في وضع المسودة حاليًا.',
         'pending'   => 'قيد المراجعة',
+        'pending_description' => ':name قيد المراجعة حاليًا.',
         'published' => 'منشور',
+        'published_description' => 'تم نشر المنشور.',
     ],
 ];
 ```
@@ -234,7 +240,7 @@ return [
 
 ### `EnumTranslatable`
 
-#### `trans(?string $locale = null): string`
+#### `trans(?string $locale = null, ?string $context = null, array $replace = []): string`
 
 Returns the translated label for the current case in the given locale (defaults to the app locale). Falls back to the raw value if no translation is found.
 
@@ -244,6 +250,18 @@ $status = CourseStatusEnum::DRAFT;
 $status->trans();      // 'Draft'   (current locale)
 $status->trans('ar');  // 'مسودة'
 $status->trans('en');  // 'Draft'
+```
+
+**`$context`** - appends a suffix to the translation key, letting you store multiple variants of the same case:
+
+```php
+CourseStatusEnum::PUBLISHED->trans(context: 'description'); // 'Your post has been published.'
+```
+
+**`$replace`** - passes replacement variables into the translation string (same as Laravel's `__()` replacements):
+
+```php
+CourseStatusEnum::DRAFT->trans(context: 'description', replace: ['name' => 'Course A']); // 'Course A is currently in draft mode.'
 ```
 
 #### `allTrans(): array`

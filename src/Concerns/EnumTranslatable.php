@@ -57,12 +57,16 @@ trait EnumTranslatable
     /**
      * Trans enum value
      */
-    public function trans(?string $locale = null): string
+    public function trans(?string $locale = null, ?string $context = null, array $replace = []): string
     {
         $key = $this->transKey();
 
+        if ($context) {
+            return Lang::get("{$key}_{$context}", $replace, $locale);
+        }
+
         if (Lang::has($key, $locale)) {
-            return Lang::get($key, [], $locale);
+            return Lang::get($key, $replace, $locale);
         }
 
         return $this->value;
