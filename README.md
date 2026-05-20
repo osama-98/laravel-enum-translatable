@@ -213,8 +213,11 @@ lang/
 return [
     'course_statuses' => [
         'draft'     => 'Draft',
+        'draft_description' => ':name is currently in draft mode.',
         'pending'   => 'Pending',
+        'pending_description' => ':name is currently pending review.',
         'published' => 'Published',
+        'published_description' => 'Your post has been published.',
     ],
 ];
 ```
@@ -224,8 +227,11 @@ return [
 return [
     'course_statuses' => [
         'draft'     => 'مسودة',
+        'draft_description' => ':name في وضع المسودة حاليًا.',
         'pending'   => 'قيد المراجعة',
+        'pending_description' => ':name قيد المراجعة حاليًا.',
         'published' => 'منشور',
+        'published_description' => 'تم نشر المنشور.',
     ],
 ];
 ```
@@ -247,16 +253,6 @@ $status->trans('en');  // 'Draft'
 ```
 
 **`$context`** - appends a suffix to the translation key, letting you store multiple variants of the same case:
-
-```php
-// lang/en/enums.php
-'course_statuses' => [
-    'draft'             => 'Draft',
-    'draft_description' => ':name is currently in draft mode.',
-    'published' => 'Published',
-    'published_description' => 'Your post has been published.',
-],
-```
 
 ```php
 CourseStatusEnum::PUBLISHED->trans(context: 'description'); // 'Your post has been published.'
