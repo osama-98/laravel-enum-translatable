@@ -37,6 +37,18 @@ it('can translate enum value in specific locale', function () {
         ->and($enum->trans('es'))->toBe('Borrador');
 });
 
+it('can translate enum value with context', function () {
+    $enum = TestStatusEnum::DRAFT;
+
+    expect($enum->trans(context: 'description', replace: ['name' => 'Test']))->toBe('Test is currently in draft mode.');
+});
+
+it('cannot translate enum value with invalid context', function () {
+    $enum = TestStatusEnum::PENDING;
+
+    expect($enum->trans(context: 'invalid', replace: ['name' => 'Test']))->toBe('enums.test_statuses.pending_invalid');
+});
+
 it('can get all translations for enum case', function () {
     $enum = TestStatusEnum::DRAFT;
     $allTranslations = $enum->allTrans();
