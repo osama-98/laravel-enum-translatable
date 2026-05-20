@@ -246,6 +246,28 @@ $status->trans('ar');  // 'مسودة'
 $status->trans('en');  // 'Draft'
 ```
 
+**`$context`** - appends a suffix to the translation key, letting you store multiple variants of the same case:
+
+```php
+// lang/en/enums.php
+'course_statuses' => [
+    'draft'             => 'Draft',
+    'draft_description' => ':name is currently in draft mode.',
+    'published' => 'Published',
+    'published_description' => 'Your post has been published.',
+],
+```
+
+```php
+CourseStatusEnum::PUBLISHED->trans(context: 'description'); // 'Your post has been published.'
+```
+
+**`$replace`** - passes replacement variables into the translation string (same as Laravel's `__()` replacements):
+
+```php
+CourseStatusEnum::DRAFT->trans(context: 'description', replace: ['name' => 'Course A']); // 'Course A is currently in draft mode.'
+```
+
 #### `allTrans(): array`
 
 Returns translations for all locales defined in `supported_locales`.
