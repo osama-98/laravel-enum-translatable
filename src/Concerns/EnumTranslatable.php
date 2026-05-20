@@ -62,7 +62,7 @@ trait EnumTranslatable
         $key = $this->transKey();
 
         if ($context) {
-            $key = "{$key}_{$context}";
+            return Lang::get("{$key}_{$context}", $replace, $locale);
         }
 
         if (Lang::has($key, $locale)) {
