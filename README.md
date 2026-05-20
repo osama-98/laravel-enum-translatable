@@ -234,7 +234,7 @@ return [
 
 ### `EnumTranslatable`
 
-#### `trans(?string $locale = null): string`
+#### `trans(?string $locale = null, ?string $context = null, array $replace = []): string`
 
 Returns the translated label for the current case in the given locale (defaults to the app locale). Falls back to the raw value if no translation is found.
 
