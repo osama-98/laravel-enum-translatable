@@ -354,7 +354,6 @@ if (! $usePhpStan) {
 
 if (! $useDependabot) {
     safeUnlink(__DIR__.'/.github/dependabot.yml');
-    safeUnlink(__DIR__.'/.github/workflows/dependabot-auto-merge.yml');
 }
 
 if (! $useLaravelRay) {
