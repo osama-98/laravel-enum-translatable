@@ -13,7 +13,7 @@
 A Laravel package that extends PHP 8.2 backed enums with first-class translation support, fluent array helpers, and safe comparison utilities — all through composable traits.
 
 **References:** [Medium Article](https://masteryoflaravel.medium.com/stop-hardcoding-translations-the-revolutionary-way-to-build-multilingual-laravel-apps-with-bf383533b8b8) · [Laravel News](https://laravel-news.com/translatable-enums)
-
+h
 ---
 
 ## Table of Contents
@@ -410,7 +410,7 @@ CourseStatusEnum::randomValue(except: ['draft', 'pending']); // always returns '
 Filter cases using a wildcard pattern. Matching is case-insensitive; `*` matches any sequence of characters.
 
 ```php
-CourseStatusEnum::matching('*ed');    // [PENDING, PUBLISHED]
+CourseStatusEnum::matching('*ed');    // [PUBLISHED]
 CourseStatusEnum::notMatching('*ed'); // [DRAFT]
 ```
 
@@ -418,7 +418,7 @@ The following convenience methods are also available:
 
 ```php
 CourseStatusEnum::startsWith('p');  // [PENDING, PUBLISHED]
-CourseStatusEnum::endsWith('ed');   // [PENDING, PUBLISHED]
+CourseStatusEnum::endsWith('ed');   // [PUBLISHED]
 CourseStatusEnum::contains('ish');  // [PUBLISHED]
 ```
 
