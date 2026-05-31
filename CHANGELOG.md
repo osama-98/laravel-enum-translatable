@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.1 - 2026-05-31
+
+**Full Changelog**: https://github.com/osama-98/laravel-enum-translatable/compare/2.2.0...2.2.1
+
 ## 2.1.0 - 2026-03-23
 
 - Add Laravel13 support
