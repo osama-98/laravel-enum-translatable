@@ -12,7 +12,7 @@
 
 A Laravel package that extends PHP 8.2 backed enums with first-class translation support, fluent array helpers, and safe comparison utilities — all through composable traits.
 
-**References:** [Medium Article](https://masteryoflaravel.medium.com/stop-hardcoding-translations-the-revolutionary-way-to-build-multilingual-laravel-apps-with-bf383533b8b8) · [Laravel News](https://laravel-news.com/translatable-enums)
+**References:** [Medium Article](https://masteryoflaravel.medium.com/stop-hardcoding-translations-the-revolutionary-way-to-build-multilingual-laravel-apps-with-bf303533b8b0) · [Laravel News](https://laravel-news.com/translatable-enums)
 ---
 
 ## Table of Contents
