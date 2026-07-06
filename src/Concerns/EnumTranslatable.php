@@ -28,7 +28,7 @@ trait EnumTranslatable
     public static function getTransKey(): string
     {
         $namespace = static::getTranslationNamespace();
-        $key = str(rtrim(class_basename(static::class), 'Enum'))->snake()->plural();
+        $key = str(static::class)->classBasename()->beforeLast('Enum')->snake()->plural();
 
         return $namespace ? "$namespace::enums.$key" : "enums.$key";
     }
