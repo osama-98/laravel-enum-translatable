@@ -27,7 +27,7 @@ it('can get translation key for enums without Enum suffix', function () {
     $enum = GlossaryRuleAction::ALWAYS_TRANSLATE;
     $key = $enum->transKey();
 
-    expect($key)->toBe('enums.glossary_rule_actions.translate');
+    expect($key)->toBe('enums.glossary_rule_actions.always_translate');
 });
 
 it('can translate enum value in current locale', function () {
