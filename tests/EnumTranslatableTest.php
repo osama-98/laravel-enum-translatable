@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
+use Osama\LaravelEnums\Tests\Enums\GlossaryRuleAction;
 use Osama\LaravelEnums\Tests\Enums\TestStatusEnum;
 
 beforeEach(function () {
@@ -20,6 +21,13 @@ it('can get translation key for enum case', function () {
     $key = $enum->transKey();
 
     expect($key)->toBe('enums.test_statuses.draft');
+});
+
+it('can get translation key for enums without Enum suffix', function () {
+    $enum = GlossaryRuleAction::ALWAYS_TRANSLATE;
+    $key = $enum->transKey();
+
+    expect($key)->toBe('enums.glossary_rule_actions.always_translate');
 });
 
 it('can translate enum value in current locale', function () {
