@@ -6,22 +6,46 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/osama-98/laravel-enum-translatable.svg)](https://packagist.org/packages/osama-98/laravel-enum-translatable)
 [![License](https://img.shields.io/packagist/l/osama-98/laravel-enum-translatable.svg?style=flat-square)](https://packagist.org/packages/osama-98/laravel-enum-translatable)
 
-**Supercharge your Laravel enums with translations, array helpers, and comparison methods — all via simple traits.**
-
-[Medium Article](https://masteryoflaravel.medium.com/stop-hardcoding-translations-the-revolutionary-way-to-build-multilingual-laravel-apps-with-bf303533b8b0) · [Laravel News](https://laravel-news.com/translatable-enums)
-
 </div>
+
+# Laravel Enum Translatable
+
+A Laravel package that extends PHP 8.2 backed enums with first-class translation support, fluent array helpers, and safe comparison utilities — all through composable traits.
+
+**References:** [Medium Article](https://masteryoflaravel.medium.com/stop-hardcoding-translations-the-revolutionary-way-to-build-multilingual-laravel-apps-with-bf303533b8b0) · [Laravel News](https://laravel-news.com/translatable-enums)
+---
+
+## Table of Contents
+
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Configuration](#configuration)
+- [Available Traits](#available-traits)
+- [Generating Enums](#generating-enums)
+- [Usage](#usage)
+  - [Translation Key Convention](#translation-key-convention)
+  - [EnumTranslatable](#enumtranslatable)
+  - [EnumArrayable](#enumarrayable)
+  - [EnumWrappable](#enumwrappable)
+- [Real-World Examples](#real-world-examples)
+- [Testing](#testing)
+- [Changelog](#changelog)
+- [Credits](#credits)
+- [License](#license)
 
 ---
 
 ## Requirements
 
-- PHP 8.2+
-- Laravel 11 or 12
+- PHP 8.2 or higher
+- Laravel 11.0 or higher
 
 ---
 
 ## Installation
+
+Install the package via Composer:
 
 ```bash
 composer require osama-98/laravel-enum-translatable
@@ -31,13 +55,13 @@ composer require osama-98/laravel-enum-translatable
 
 ## Quick Start
 
-**1. Generate an enum:**
+**Step 1.** Generate an enum using the Artisan command:
 
 ```bash
 php artisan make:enum OrderStatus
 ```
 
-**2. Add your cases:**
+**Step 2.** Define your cases and apply the trait:
 
 ```php
 enum OrderStatusEnum: string
@@ -50,7 +74,7 @@ enum OrderStatusEnum: string
 }
 ```
 
-**3. Add translations in `lang/en/enums.php`:**
+**Step 3.** Add translation entries in `lang/en/enums.php`:
 
 ```php
 return [
@@ -62,27 +86,27 @@ return [
 ];
 ```
 
-**4. Use it:**
+**Step 4.** Use the enum in your application:
 
 ```php
-OrderStatusEnum::PENDING->trans();       // 'Pending'
-OrderStatusEnum::PENDING->trans('ar');   // 'قيد الانتظار'
-OrderStatusEnum::toArrayTrans();         // [['value' => 'pending', 'name' => 'Pending'], ...]
+OrderStatusEnum::PENDING->trans();      // 'Pending'
+OrderStatusEnum::PENDING->trans('ar');  // 'قيد الانتظار'
+OrderStatusEnum::toArrayTrans();        // [['value' => 'pending', 'name' => 'Pending'], ...]
 ```
 
 ---
 
 ## Configuration
 
-Publish the config file to customize supported locales and modular support:
+Publish the configuration file to customise supported locales and modular support:
 
 ```bash
 php artisan vendor:publish --tag="laravel-enums-config"
 ```
 
-`config/laravel-enums.php`:
-
 ```php
+// config/laravel-enums.php
+
 return [
 
     /*
@@ -107,7 +131,7 @@ return [
     | Namespace Resolver
     |--------------------------------------------------------------------------
     | The class responsible for resolving a module's translation namespace.
-    | Extend TranslationNamespaceResolver to customize the resolution logic.
+    | Extend TranslationNamespaceResolver to customise the resolution logic.
     */
     'namespace_resolver' => \Osama\LaravelEnums\TranslationNamespaceResolver::class,
 
@@ -118,57 +142,57 @@ return [
 
 ## Available Traits
 
-The package ships three traits that build on each other:
+The package provides three traits that compose on top of one another:
 
 ```
 EnumTranslatable
- └── EnumArrayable
-      └── EnumWrappable
+└── EnumArrayable
+    └── EnumWrappable
 ```
 
-| Trait | Best for |
+| Trait | Intended Use |
 |---|---|
-| `EnumTranslatable` | Enums that need translated labels (includes everything below) |
-| `EnumArrayable` | Enums used for filtering/listing without translation |
-| `EnumWrappable` | Enums that only need comparison and safe-casting helpers |
+| `EnumTranslatable` | Enums that require translated labels. Includes all traits below. |
+| `EnumArrayable` | Enums used for filtering or listing, without translation. |
+| `EnumWrappable` | Enums that only need comparison and safe-casting helpers. |
 
 ---
 
 ## Generating Enums
 
-Use the `make:enum` artisan command to scaffold a new enum class:
+Use the `make:enum` Artisan command to scaffold a new enum class:
 
 ```bash
-# String backed with EnumTranslatable (default)
+# String-backed with EnumTranslatable (default)
 php artisan make:enum OrderStatus
 
-# Integer backed
+# Integer-backed
 php artisan make:enum OrderStatus --int
 
-# With EnumArrayable instead
+# With EnumArrayable
 php artisan make:enum OrderStatus --arrayable
 
-# With EnumWrappable instead
+# With EnumWrappable
 php artisan make:enum OrderStatus --wrappable
 ```
 
-> **Note:** `--arrayable` already includes `EnumWrappable` internally, so there is no need to pass both.
+> **Note:** The `--arrayable` flag already includes `EnumWrappable` internally. There is no need to combine both flags.
 
 Generated files are placed in `app/Enums/`. Nested namespaces are supported using `/`:
 
 ```bash
 php artisan make:enum Admin/UserStatus
-# → app/Enums/Admin/UserStatusEnum.php
-# → namespace App\Enums\Admin
+# Generates: app/Enums/Admin/UserStatusEnum.php
+# Namespace:  App\Enums\Admin
 ```
 
-> The `Enum` suffix is appended automatically if not included in the name.
+The `Enum` suffix is appended automatically if it is not included in the provided name.
 
 ---
 
 ## Usage
 
-All examples use the following enum:
+All examples in this section use the following enum definition:
 
 ```php
 <?php
@@ -189,48 +213,48 @@ enum CourseStatusEnum: string
 
 ### Translation Key Convention
 
-The translation key is derived automatically from the class name:
+The translation key is derived automatically from the enum class name by applying the following rules:
 
-- Strip the `Enum` suffix
-- Convert to `snake_case`
-- Pluralize
-- Nest under the `enums` key
+1. Strip the `Enum` suffix
+2. Convert to `snake_case`
+3. Pluralise
+4. Nest under the `enums` key
 
-`CourseStatusEnum` → `enums.course_statuses`
+```
+CourseStatusEnum  =>  enums.course_statuses
+```
 
-Create one `enums.php` file per locale inside your `lang/` directory:
+Create one `enums.php` translation file per locale inside your `lang/` directory:
 
 ```
 lang/
 ├── en/
 │   └── enums.php
-├── ar/
-│   └── enums.php
+└── ar/
+    └── enums.php
 ```
 
 ```php
 // lang/en/enums.php
 return [
     'course_statuses' => [
-        'draft'     => 'Draft',
-        'draft_description' => ':name is currently in draft mode.',
-        'pending'   => 'Pending',
-        'pending_description' => ':name is currently pending review.',
-        'published' => 'Published',
+        'draft'                => 'Draft',
+        'draft_description'    => ':name is currently in draft mode.',
+        'pending'              => 'Pending',
+        'pending_description'  => ':name is currently pending review.',
+        'published'            => 'Published',
         'published_description' => 'Your post has been published.',
     ],
 ];
-```
 
-```php
 // lang/ar/enums.php
 return [
     'course_statuses' => [
-        'draft'     => 'مسودة',
-        'draft_description' => ':name في وضع المسودة حاليًا.',
-        'pending'   => 'قيد المراجعة',
-        'pending_description' => ':name قيد المراجعة حاليًا.',
-        'published' => 'منشور',
+        'draft'                => 'مسودة',
+        'draft_description'    => ':name في وضع المسودة حاليًا.',
+        'pending'              => 'قيد المراجعة',
+        'pending_description'  => ':name قيد المراجعة حاليًا.',
+        'published'            => 'منشور',
         'published_description' => 'تم نشر المنشور.',
     ],
 ];
@@ -238,35 +262,37 @@ return [
 
 ---
 
-### `EnumTranslatable`
+### EnumTranslatable
 
 #### `trans(?string $locale = null, ?string $context = null, array $replace = []): string`
 
-Returns the translated label for the current case in the given locale (defaults to the app locale). Falls back to the raw value if no translation is found.
+Returns the translated label for the current case. Defaults to the application locale. Falls back to the raw enum value if no translation is found.
 
 ```php
 $status = CourseStatusEnum::DRAFT;
 
-$status->trans();      // 'Draft'   (current locale)
-$status->trans('ar');  // 'مسودة'
-$status->trans('en');  // 'Draft'
+$status->trans();     // 'Draft'   (current application locale)
+$status->trans('ar'); // 'مسودة'
+$status->trans('en'); // 'Draft'
 ```
 
-**`$context`** - appends a suffix to the translation key, letting you store multiple variants of the same case:
+The optional `$context` parameter appends a suffix to the translation key, enabling multiple label variants per case:
 
 ```php
-CourseStatusEnum::PUBLISHED->trans(context: 'description'); // 'Your post has been published.'
+CourseStatusEnum::PUBLISHED->trans(context: 'description');
+// 'Your post has been published.'
 ```
 
-**`$replace`** - passes replacement variables into the translation string (same as Laravel's `__()` replacements):
+The optional `$replace` parameter passes replacement variables into the translation string, identical to Laravel's `__()` helper:
 
 ```php
-CourseStatusEnum::DRAFT->trans(context: 'description', replace: ['name' => 'Course A']); // 'Course A is currently in draft mode.'
+CourseStatusEnum::DRAFT->trans(context: 'description', replace: ['name' => 'Course A']);
+// 'Course A is currently in draft mode.'
 ```
 
 #### `allTrans(): array`
 
-Returns translations for all locales defined in `supported_locales`.
+Returns translations for all locales defined in the `supported_locales` configuration option.
 
 ```php
 CourseStatusEnum::DRAFT->allTrans();
@@ -275,12 +301,13 @@ CourseStatusEnum::DRAFT->allTrans();
 
 #### `toArrayTrans(?string $locale = null): array`
 
-Returns all cases as an array of `['value', 'name']` pairs. Uses the current app locale when `$locale` is `null`.
+Returns all cases as an array of `['value', 'name']` pairs. Uses the current application locale when `$locale` is `null`.
 
 ```php
-CourseStatusEnum::toArrayTrans();      // current locale
-CourseStatusEnum::toArrayTrans('ar');  // Arabic
-CourseStatusEnum::toArrayTrans('en');  // English
+CourseStatusEnum::toArrayTrans();     // current locale
+CourseStatusEnum::toArrayTrans('ar'); // Arabic
+CourseStatusEnum::toArrayTrans('en'); // English
+
 // [
 //     ['value' => 'draft',     'name' => 'Draft'],
 //     ['value' => 'pending',   'name' => 'Pending'],
@@ -290,11 +317,11 @@ CourseStatusEnum::toArrayTrans('en');  // English
 
 #### `toTransCollection(?string $locale = null): Collection`
 
-Same as `toArrayTrans()` but returns a Laravel `Collection`.
+Identical to `toArrayTrans()` but returns a Laravel `Collection`.
 
 ```php
-CourseStatusEnum::toTransCollection();      // current locale
-CourseStatusEnum::toTransCollection('ar');  // Arabic
+CourseStatusEnum::toTransCollection('ar');
+
 // Collection([
 //     ['value' => 'draft',     'name' => 'مسودة'],
 //     ['value' => 'pending',   'name' => 'قيد المراجعة'],
@@ -304,7 +331,7 @@ CourseStatusEnum::toTransCollection('ar');  // Arabic
 
 #### `object(): array`
 
-Returns the current case as a `['value', 'name']` pair using the current locale. Ideal for API responses.
+Returns the current case as a `['value', 'name']` pair using the current locale. Suitable for use in API responses.
 
 ```php
 CourseStatusEnum::DRAFT->object();
@@ -316,20 +343,22 @@ CourseStatusEnum::DRAFT->object();
 Returns the full translation key for the current case.
 
 ```php
-CourseStatusEnum::DRAFT->transKey(); // 'enums.course_statuses.draft'
+CourseStatusEnum::DRAFT->transKey();
+// 'enums.course_statuses.draft'
 ```
 
 #### `getTransKey(): string`
 
-Returns the translation key for the enum class (without a specific case).
+Returns the translation key for the enum class, without a specific case appended.
 
 ```php
-CourseStatusEnum::getTransKey(); // 'enums.course_statuses'
+CourseStatusEnum::getTransKey();
+// 'enums.course_statuses'
 ```
 
 ---
 
-### `EnumArrayable`
+### EnumArrayable
 
 #### `names(): array` · `values(): array` · `toArray(): array`
 
@@ -341,7 +370,7 @@ CourseStatusEnum::toArray(); // ['draft' => 'DRAFT', 'pending' => 'PENDING', 'pu
 
 #### `toCollection(): Collection`
 
-Same as `toArray()` but returns a Laravel `Collection`, giving you access to all collection methods.
+Identical to `toArray()` but returns a Laravel `Collection`.
 
 ```php
 CourseStatusEnum::toCollection();
@@ -353,7 +382,7 @@ CourseStatusEnum::toCollection()->values(); // ['DRAFT', 'PENDING', 'PUBLISHED']
 
 #### `only(array $values): array` · `except(array $values): array`
 
-Filter cases by value. Accepts raw values or enum instances.
+Filter cases by value. Accepts raw string values or enum instances.
 
 ```php
 CourseStatusEnum::only(['draft', 'pending']);
@@ -365,45 +394,46 @@ CourseStatusEnum::except([CourseStatusEnum::PUBLISHED]);
 
 #### `randomCase(): self` · `randomValue(): string`
 
-Pick a random case or value, with an optional exclusion list.
+Returns a random case or raw value. Accepts an optional exclusion list.
 
 ```php
-CourseStatusEnum::randomCase();                        // e.g. CourseStatusEnum::PENDING
-CourseStatusEnum::randomValue();                       // e.g. 'pending'
-CourseStatusEnum::randomCase(except: CourseStatusEnum::DRAFT); // never returns DRAFT
-CourseStatusEnum::randomValue(except: ['draft', 'pending']);   // always returns 'published'
+CourseStatusEnum::randomCase();  // e.g. CourseStatusEnum::PENDING
+CourseStatusEnum::randomValue(); // e.g. 'pending'
+
+CourseStatusEnum::randomCase(except: CourseStatusEnum::DRAFT);
+CourseStatusEnum::randomValue(except: ['draft', 'pending']); // always returns 'published'
 ```
 
 #### `matching(string $pattern): array` · `notMatching(string $pattern): array`
 
-Filter cases using a wildcard pattern. Case-insensitive. `*` matches any characters.
+Filter cases using a wildcard pattern. Matching is case-insensitive; `*` matches any sequence of characters.
 
 ```php
-CourseStatusEnum::matching('*ed');    // [PENDING, PUBLISHED]
+CourseStatusEnum::matching('*ed');    // [PUBLISHED]
 CourseStatusEnum::notMatching('*ed'); // [DRAFT]
 ```
 
-Convenience shortcuts:
+The following convenience methods are also available:
 
 ```php
-CourseStatusEnum::startsWith('p'); // [PENDING, PUBLISHED]
-CourseStatusEnum::endsWith('ed');  // [PENDING, PUBLISHED]
-CourseStatusEnum::contains('ish'); // [PUBLISHED]
+CourseStatusEnum::startsWith('p');  // [PENDING, PUBLISHED]
+CourseStatusEnum::endsWith('ed');   // [PUBLISHED]
+CourseStatusEnum::contains('ish');  // [PUBLISHED]
 ```
 
 ---
 
-### `EnumWrappable`
+### EnumWrappable
 
 #### `wrap(BackedEnum|string|null $value, bool $strict = true): ?static`
 
-Safely casts a string or an existing enum instance to the enum. Returns `null` for empty values. Use `strict: false` to use `tryFrom` instead of `from` (no exception on invalid values).
+Safely casts a string or an existing enum instance to the enum type. Returns `null` for empty or `null` values. Set `strict: false` to use `tryFrom()` instead of `from()`, which suppresses exceptions on invalid input.
 
 ```php
-CourseStatusEnum::wrap('draft');                   // CourseStatusEnum::DRAFT
-CourseStatusEnum::wrap(CourseStatusEnum::DRAFT);   // CourseStatusEnum::DRAFT
-CourseStatusEnum::wrap(null);                      // null
-CourseStatusEnum::wrap('invalid', strict: false);  // null
+CourseStatusEnum::wrap('draft');                  // CourseStatusEnum::DRAFT
+CourseStatusEnum::wrap(CourseStatusEnum::DRAFT);  // CourseStatusEnum::DRAFT
+CourseStatusEnum::wrap(null);                     // null
+CourseStatusEnum::wrap('invalid', strict: false); // null
 ```
 
 #### `is(BackedEnum|string $value): bool` · `isNot(BackedEnum|string $value): bool`
@@ -419,8 +449,8 @@ $status->isNot(CourseStatusEnum::PUBLISHED); // true
 #### `isAny(array $values): bool` · `isNotAny(array $values): bool`
 
 ```php
-$status->isAny(['draft', 'pending']);                                       // true
-$status->isAny([CourseStatusEnum::PUBLISHED]);                              // false
+$status->isAny(['draft', 'pending']);                                        // true
+$status->isAny([CourseStatusEnum::PUBLISHED]);                               // false
 $status->isNotAny([CourseStatusEnum::PENDING, CourseStatusEnum::PUBLISHED]); // true
 ```
 
@@ -430,7 +460,7 @@ $status->isNotAny([CourseStatusEnum::PENDING, CourseStatusEnum::PUBLISHED]); // 
 
 ### Eloquent Model
 
-Cast a column to an enum automatically:
+Cast a database column directly to an enum using Laravel's built-in casting:
 
 ```php
 protected function casts(): array
@@ -443,7 +473,7 @@ protected function casts(): array
 
 ### API Resource
 
-Use `object()` to return a structured value + label pair:
+Use `object()` to return a structured `value` and `name` pair in API responses:
 
 ```php
 public function toArray(Request $request): array
@@ -457,7 +487,9 @@ public function toArray(Request $request): array
 }
 ```
 
-### Select Dropdown (Controller)
+### Select Dropdown
+
+Return all cases as translatable options for a frontend select component:
 
 ```php
 public function create(): JsonResponse
@@ -480,13 +512,17 @@ composer test
 
 ## Changelog
 
-Please see [CHANGELOG](CHANGELOG.md) for recent changes.
+Please refer to [CHANGELOG.md](CHANGELOG.md) for a detailed list of changes in each release.
+
+---
 
 ## Credits
 
 - [Osama Sadah](https://github.com/osama-98)
 - [All Contributors](../../contributors)
 
+---
+
 ## License
 
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+This package is open-sourced software licensed under the [MIT License](LICENSE.md).
