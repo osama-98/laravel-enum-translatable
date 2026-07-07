@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.3 - 2026-07-07
+
+### What's Changed
+
+* chore(deps): bump actions/checkout from 6 to 7 by @dependabot[bot] in https://github.com/osama-98/laravel-enum-translatable/pull/13
+* [FIX] Issues with using rtrim function by @devhammed in https://github.com/osama-98/laravel-enum-translatable/pull/14
+
+**Full Changelog**: https://github.com/osama-98/laravel-enum-translatable/compare/2.2.1...2.3
+
 ## 2.2.1 - 2026-05-31
 
 **Full Changelog**: https://github.com/osama-98/laravel-enum-translatable/compare/2.2.0...2.2.1
