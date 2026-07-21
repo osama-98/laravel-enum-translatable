@@ -8,7 +8,7 @@
 
 </div>
 
-# Laravel Enum Translatable
+# Translate Native PHP Enums in Laravel (Laravel 10/11/12)
 
 A Laravel package that extends PHP 8.2 backed enums with first-class translation support, fluent array helpers, and safe comparison utilities — all through composable traits.
 
