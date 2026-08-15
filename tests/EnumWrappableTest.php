@@ -1,6 +1,9 @@
 <?php
 
+use Osama\LaravelEnums\Tests\Enums\MirrorEnum;
+use Osama\LaravelEnums\Tests\Enums\PatternEnum;
 use Osama\LaravelEnums\Tests\Enums\SimpleEnum;
+use Osama\LaravelEnums\Tests\Enums\ZeroBackedEnum;
 
 it('can wrap an enum instance', function () {
     $enum = SimpleEnum::FIRST;
@@ -38,6 +41,30 @@ it('returns null when wrapping invalid value in non-strict mode', function () {
     $wrapped = SimpleEnum::wrap('invalid', false);
 
     expect($wrapped)->toBeNull();
+});
+
+it('resolves a foreign enum with a matching value to its own case', function () {
+    $wrapped = SimpleEnum::wrap(MirrorEnum::FIRST);
+
+    expect($wrapped)->toBe(SimpleEnum::FIRST);
+    expect($wrapped)->toBeInstanceOf(SimpleEnum::class);
+});
+
+it('throws exception when wrapping a foreign enum with an unknown value in strict mode', function () {
+    expect(fn () => SimpleEnum::wrap(PatternEnum::ACTIVE_USER, true))
+        ->toThrow(ValueError::class);
+});
+
+it('returns null when wrapping a foreign enum with an unknown value in non-strict mode', function () {
+    $wrapped = SimpleEnum::wrap(PatternEnum::ACTIVE_USER, false);
+
+    expect($wrapped)->toBeNull();
+});
+
+it('wraps a zero backed value instead of treating it as empty', function () {
+    $wrapped = ZeroBackedEnum::wrap('0');
+
+    expect($wrapped)->toBe(ZeroBackedEnum::ZERO);
 });
 
 it('returns true when comparing enum instance with same enum', function () {

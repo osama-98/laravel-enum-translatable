@@ -6,14 +6,18 @@ use BackedEnum;
 
 trait EnumWrappable
 {
-    public static function wrap(BackedEnum|string|null $enum, bool $strict = true): ?BackedEnum
+    public static function wrap(BackedEnum|string|null $enum, bool $strict = true): ?static
     {
-        if (empty($enum)) {
+        if ($enum === null || $enum === '') {
             return null;
         }
 
-        if ($enum instanceof BackedEnum) {
+        if ($enum instanceof static) {
             return $enum;
+        }
+
+        if ($enum instanceof BackedEnum) {
+            $enum = $enum->value;
         }
 
         return $strict ? static::from($enum) : static::tryFrom($enum);

@@ -1,5 +1,19 @@
 # Changelog
 
+## Unreleased
+
+### Breaking Changes
+
+- `EnumWrappable::wrap()` no longer passes foreign enum instances through unchanged. Previously `Status::wrap(Role::ADMIN)` returned the `Role` case as-is; it now unwraps to `->value` and re-resolves against the calling enum, so it returns the matching `Status` case, throws `ValueError` when there is no match in strict mode, or returns `null` in non-strict mode.
+
+### Fixed
+
+- `wrap()` returned `null` for a case backed by the string `'0'` because the emptiness check used `empty()`. It now only short-circuits on `null` and `''`.
+
+### Changed
+
+- `wrap()` return type narrowed from `?BackedEnum` to `?static`, so `Status::wrap($value)` is typed as `?Status` for static analysis and IDE completion. Callers typed against `BackedEnum` are unaffected; any subclass overriding `wrap()` with a wider return type must be updated.
+
 ## 2.3 - 2026-07-07
 
 ### What's Changed

@@ -427,12 +427,14 @@ CourseStatusEnum::contains('ish');  // [PUBLISHED]
 
 #### `wrap(BackedEnum|string|null $value, bool $strict = true): ?static`
 
-Safely casts a string or an existing enum instance to the enum type. Returns `null` for empty or `null` values. Set `strict: false` to use `tryFrom()` instead of `from()`, which suppresses exceptions on invalid input.
+Safely casts a string or an existing enum instance to the enum type. Returns `null` for `null` or an empty string. A backed enum of a *different* type is unwrapped to its value and re-resolved against the calling enum, so the result is always an instance of the calling enum or `null`. Set `strict: false` to use `tryFrom()` instead of `from()`, which suppresses exceptions on invalid input.
 
 ```php
 CourseStatusEnum::wrap('draft');                  // CourseStatusEnum::DRAFT
 CourseStatusEnum::wrap(CourseStatusEnum::DRAFT);  // CourseStatusEnum::DRAFT
+CourseStatusEnum::wrap(OtherEnum::DRAFT);         // CourseStatusEnum::DRAFT (matched by value)
 CourseStatusEnum::wrap(null);                     // null
+CourseStatusEnum::wrap('0');                      // the case backed by '0', if any
 CourseStatusEnum::wrap('invalid', strict: false); // null
 ```
 
