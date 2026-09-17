@@ -74,7 +74,7 @@ enum OrderStatusEnum: string
 }
 ```
 
-**Step 3.** Add translation entries in `lang/en/enums.php`:
+**Step 3.** Add translation entries in `lang/en/enums.php` or `resources/lang/en/enums.php` (as your translation directory):
 
 ```php
 return [
