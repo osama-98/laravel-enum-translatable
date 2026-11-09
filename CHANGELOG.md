@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.5.0 - 2026-11-09
+
+### What's Changed
+
+* Bugfix/enum trans name by @osama-98 in https://github.com/osama-98/laravel-enum-translatable/pull/15
+
+**Full Changelog**: https://github.com/osama-98/laravel-enum-translatable/compare/2.4...2.5.0
+
 ## Unreleased
 
 ### Fixed
@@ -8,6 +16,7 @@
   - `wrap()`, `is()`, `isNot()`, `isAny()` and `isNotAny()` accept `int` values, and `wrap(0)` resolves the int `0` case.
   - `randomCase()` and `randomValue()` accept `int` values in `$except`, and `except: 0` is no longer ignored.
   - `matching()`, `notMatching()`, `startsWith()`, `endsWith()` and `contains()` compare int values as text instead of passing an `int` to `preg_match()`.
+  
 
 ### Changed
 
