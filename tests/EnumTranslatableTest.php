@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
+use Osama\LaravelEnums\Tests\Enums\MediumEnum;
+use Osama\LaravelEnums\Tests\Enums\Season;
 use Osama\LaravelEnums\Tests\Enums\TestStatusEnum;
 
 beforeEach(function () {
@@ -13,6 +15,11 @@ it('can get translation key for enum', function () {
     $key = TestStatusEnum::getTransKey();
 
     expect($key)->toBe('enums.test_statuses');
+});
+
+it('strips only the Enum suffix when building the translation key', function () {
+    expect(MediumEnum::getTransKey())->toBe('enums.media')
+        ->and(Season::getTransKey())->toBe('enums.seasons');
 });
 
 it('can get translation key for enum case', function () {
