@@ -2,22 +2,32 @@
 
 ## Unreleased
 
+### Fixed
+
+- Int-backed enums are now supported across the traits:
+  - `wrap()`, `is()`, `isNot()`, `isAny()` and `isNotAny()` accept `int` values, and `wrap(0)` resolves the int `0` case.
+  - `randomCase()` and `randomValue()` accept `int` values in `$except`, and `except: 0` is no longer ignored.
+  - `matching()`, `notMatching()`, `startsWith()`, `endsWith()` and `contains()` compare int values as text instead of passing an `int` to `preg_match()`.
+
+### Changed
+
+- `randomValue()` return type widened from `string` to `int|string`, so int-backed enums return an `int` instead of a numeric string. Callers that rely on a `string` must handle `int`.
+
+## 2.4 - 2026-08-15
+
 ### Breaking Changes
 
 - `EnumWrappable::wrap()` no longer passes foreign enum instances through unchanged. Previously `Status::wrap(Role::ADMIN)` returned the `Role` case as-is; it now unwraps to `->value` and re-resolves against the calling enum, so it returns the matching `Status` case, throws `ValueError` when there is no match in strict mode, or returns `null` in non-strict mode.
 
 ### Fixed
 
-- `wrap()` returned `null` for a case backed by the string `'0'` because the emptiness check used `empty()`. It now only short-circuits on `null` and `''`, so the int `0` case also resolves.
-- Int-backed enums are now supported across the traits:
-  - `wrap()`, `is()`, `isNot()`, `isAny()` and `isNotAny()` accept `int` values.
-  - `randomCase()` and `randomValue()` accept `int` values in `$except`, and `except: 0` is no longer ignored.
-  - `matching()`, `notMatching()`, `startsWith()`, `endsWith()` and `contains()` compare int values as text instead of passing an `int` to `preg_match()`.
+- `wrap()` returned `null` for a case backed by the string `'0'` because the emptiness check used `empty()`. It now only short-circuits on `null` and `''`.
 
 ### Changed
 
 - `wrap()` return type narrowed from `?BackedEnum` to `?static`, so `Status::wrap($value)` is typed as `?Status` for static analysis and IDE completion. Callers typed against `BackedEnum` are unaffected; any subclass overriding `wrap()` with a wider return type must be updated.
-- `randomValue()` return type widened from `string` to `int|string`, so int-backed enums return an `int` instead of a numeric string. Callers that rely on a `string` must handle `int`.
+
+**Full Changelog**: https://github.com/osama-98/laravel-enum-translatable/compare/2.3...2.4
 
 ## 2.3 - 2026-07-07
 
