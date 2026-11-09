@@ -33,7 +33,7 @@ trait EnumArrayable
     /**
      * Return a random value of enum values
      */
-    public static function randomValue(BackedEnum|array|string|null $except = null): string
+    public static function randomValue(BackedEnum|array|int|string|null $except = null): int|string
     {
         $randomCase = self::randomCase($except);
 
@@ -43,10 +43,10 @@ trait EnumArrayable
     /**
      * Return a random case of enum cases
      */
-    public static function randomCase(BackedEnum|array|string|null $except = null): self
+    public static function randomCase(BackedEnum|array|int|string|null $except = null): self
     {
         $cases = self::cases();
-        if (! empty($except)) {
+        if (! is_null($except)) {
             $except = Arr::map(Arr::wrap($except), fn ($value) => $value instanceof BackedEnum ? $value->value : $value);
             $cases = Arr::where($cases, fn ($case) => ! in_array($case->value, $except));
         }
@@ -89,7 +89,7 @@ trait EnumArrayable
     {
         $regex = '/^'.str_replace('\*', '.*', preg_quote($pattern, '/')).'$/i';
 
-        return Arr::where(self::cases(), fn ($case) => preg_match($regex, $case->value));
+        return Arr::where(self::cases(), fn ($case) => preg_match($regex, (string) $case->value));
     }
 
     /**
@@ -101,7 +101,7 @@ trait EnumArrayable
     {
         $regex = '/^'.str_replace('\*', '.*', preg_quote($pattern, '/')).'$/i';
 
-        return Arr::where(self::cases(), fn ($case) => ! preg_match($regex, $case->value));
+        return Arr::where(self::cases(), fn ($case) => ! preg_match($regex, (string) $case->value));
     }
 
     /**

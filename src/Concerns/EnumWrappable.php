@@ -6,9 +6,9 @@ use BackedEnum;
 
 trait EnumWrappable
 {
-    public static function wrap(BackedEnum|string|null $enum, bool $strict = true): ?BackedEnum
+    public static function wrap(BackedEnum|int|string|null $enum, bool $strict = true): ?BackedEnum
     {
-        if (empty($enum)) {
+        if ($enum === null || $enum === '') {
             return null;
         }
 
@@ -20,9 +20,9 @@ trait EnumWrappable
     }
 
     /**
-     * Check if the current enum instance matches the given enum or string value.
+     * Check if the current enum instance matches the given enum or backing value.
      */
-    public function is(BackedEnum|string $value): bool
+    public function is(BackedEnum|int|string $value): bool
     {
         if ($value instanceof BackedEnum) {
             return $this === $value;
@@ -32,9 +32,9 @@ trait EnumWrappable
     }
 
     /**
-     * Check if the current enum instance does NOT match the given enum or string value.
+     * Check if the current enum instance does NOT match the given enum or backing value.
      */
-    public function isNot(BackedEnum|string $value): bool
+    public function isNot(BackedEnum|int|string $value): bool
     {
         return ! $this->is($value);
     }

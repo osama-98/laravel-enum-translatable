@@ -1,5 +1,6 @@
 <?php
 
+use Osama\LaravelEnums\Tests\Enums\PriorityEnum;
 use Osama\LaravelEnums\Tests\Enums\SimpleEnum;
 
 it('can wrap an enum instance', function () {
@@ -128,4 +129,20 @@ it('returns false when enum matches any of given string values', function () {
     $enum = SimpleEnum::FIRST;
 
     expect($enum->isNotAny(['first', 'second']))->toBeFalse();
+});
+
+it('can wrap an integer value to an int backed enum', function () {
+    expect(PriorityEnum::wrap(1))->toBe(PriorityEnum::LOW)
+        ->and(PriorityEnum::wrap(0))->toBe(PriorityEnum::NONE);
+});
+
+it('returns null when wrapping an invalid integer in non-strict mode', function () {
+    expect(PriorityEnum::wrap(99, strict: false))->toBeNull();
+});
+
+it('compares an int backed enum with integer values', function () {
+    expect(PriorityEnum::LOW->is(1))->toBeTrue()
+        ->and(PriorityEnum::LOW->is(2))->toBeFalse()
+        ->and(PriorityEnum::NONE->isNot(0))->toBeFalse()
+        ->and(PriorityEnum::HIGH->isAny([0, 2]))->toBeTrue();
 });

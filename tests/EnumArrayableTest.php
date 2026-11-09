@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Collection;
 use Osama\LaravelEnums\Tests\Enums\PatternEnum;
+use Osama\LaravelEnums\Tests\Enums\PriorityEnum;
 use Osama\LaravelEnums\Tests\Enums\SimpleEnum;
 
 it('can get all enum case names', function () {
@@ -210,4 +211,18 @@ it('can get cases containing a substring', function () {
         ->and($cases)->toContain(PatternEnum::ACTIVE_USER)
         ->and($cases)->toContain(PatternEnum::INACTIVE_USER)
         ->and($cases)->toContain(PatternEnum::PENDING_USER);
+});
+
+it('returns an integer random value for an int backed enum', function () {
+    expect(PriorityEnum::randomValue())->toBeInt()->toBeIn(PriorityEnum::values());
+});
+
+it('excludes the zero value when getting a random int case', function () {
+    expect(PriorityEnum::randomCase([0, 1]))->toBe(PriorityEnum::HIGH)
+        ->and(PriorityEnum::randomValue(except: [PriorityEnum::NONE, 1]))->toBe(2);
+});
+
+it('matches int backed enum values as text', function () {
+    expect(PriorityEnum::matching('2'))->toBe([2 => PriorityEnum::HIGH])
+        ->and(PriorityEnum::notMatching('*'))->toBe([]);
 });
