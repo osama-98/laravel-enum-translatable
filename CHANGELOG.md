@@ -8,11 +8,16 @@
 
 ### Fixed
 
-- `wrap()` returned `null` for a case backed by the string `'0'` because the emptiness check used `empty()`. It now only short-circuits on `null` and `''`.
+- `wrap()` returned `null` for a case backed by the string `'0'` because the emptiness check used `empty()`. It now only short-circuits on `null` and `''`, so the int `0` case also resolves.
+- Int-backed enums are now supported across the traits:
+  - `wrap()`, `is()`, `isNot()`, `isAny()` and `isNotAny()` accept `int` values.
+  - `randomCase()` and `randomValue()` accept `int` values in `$except`, and `except: 0` is no longer ignored.
+  - `matching()`, `notMatching()`, `startsWith()`, `endsWith()` and `contains()` compare int values as text instead of passing an `int` to `preg_match()`.
 
 ### Changed
 
 - `wrap()` return type narrowed from `?BackedEnum` to `?static`, so `Status::wrap($value)` is typed as `?Status` for static analysis and IDE completion. Callers typed against `BackedEnum` are unaffected; any subclass overriding `wrap()` with a wider return type must be updated.
+- `randomValue()` return type widened from `string` to `int|string`, so int-backed enums return an `int` instead of a numeric string. Callers that rely on a `string` must handle `int`.
 
 ## 2.3 - 2026-07-07
 
