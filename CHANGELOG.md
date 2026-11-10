@@ -4,6 +4,7 @@
 
 ### Fixed
 
+- `trans()` with a `$context` whose translation is missing now returns the raw enum value, as it does without a context, instead of the untranslated key (e.g. `enums.statuses.pending_invalid`).
 - Int-backed enums are now supported across the traits:
   - `wrap()`, `is()`, `isNot()`, `isAny()` and `isNotAny()` accept `int` values, and `wrap(0)` resolves the int `0` case.
   - `randomCase()` and `randomValue()` accept `int` values in `$except`, and `except: 0` is no longer ignored.
