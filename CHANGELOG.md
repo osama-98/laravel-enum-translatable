@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.5.1 - 2026-11-10
+
+Fixed
+
+- trans() with a $context now falls back to the raw enum value when that translation is missing, instead of returning the untranslated key.
+  - Before: Status::PENDING->trans(context: 'description') → 'enums.statuses.pending_description'
+  - After: Status::PENDING->trans(context: 'description') → 'pending'
+  
+- trans() now behaves the same with or without a context, as the README already describes.
+
+Upgrade note
+
+- Code that compared the result against the key string to detect a missing translation should use Lang::has($status->transKey().'_description') instead.
+
 ## 2.5.0 - 2026-11-09
 
 ### What's Changed
