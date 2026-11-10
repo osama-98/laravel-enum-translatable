@@ -64,10 +64,10 @@ it('can translate enum value with context and replacements', function () {
     expect($enum->trans(context: 'description', replace: ['name' => 'Test']))->toBe('Test is currently in draft mode.');
 });
 
-it('cannot translate enum value with invalid context', function () {
+it('falls back to the raw value when the context translation is missing', function () {
     $enum = TestStatusEnum::PENDING;
 
-    expect($enum->trans(context: 'invalid'))->toBe('enums.test_statuses.pending_invalid');
+    expect($enum->trans(context: 'invalid'))->toBe('pending');
 });
 
 it('can get all translations for enum case', function () {
